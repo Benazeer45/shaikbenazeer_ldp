@@ -1,0 +1,36 @@
+    1  clear
+    2  git init
+    3  ls -la
+    4  git status
+    5  git log
+    6  touch newfile.txt
+    7  git status
+    8  git add newfile.txt
+    9  git status
+   10  git commit -m "Added New File"
+   11  git status
+   12  echo "Hello New File" > newfile.txt
+   13  git status
+   14  git add newfile.txt
+   15  git status
+   16  git add newfile.txt
+   17  git status
+   18  git commit -m "Updated newfile.txt"
+   19  git status
+   20  git log
+   21  git log --oneline
+   22  git log --oneline --graph
+   23  git branch
+   24  git branch commit
+   25  git checkout commit
+   26  git add newfile.txt
+   27  git commit -m "Added newfile into newly created branch called commit"
+   28  git commit -m "Added newfile into newly created branch called commit"
+   29  git remote add origin https://github.com/Benazeer45/shaikbenazeer_ldp.git
+   30  git push -u origin commit
+   31  git pull --rebase origin commit
+   32  git stash
+   33  git pull --rebase origin commit
+   34  git add newfile.txt
+   35  git push -u origin commit
+   36  history>commit.txt
