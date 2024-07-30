@@ -13,7 +13,7 @@ public class AB_DP {
         String[] inputArray = inputLine.split(" "); // Splitting the input line into individual strings
         List<Integer> sequence = new ArrayList<>();
         for (String numStr : inputArray) {
-            sequence.add(Integer.parseInt(numStr)); // Converting strings to integers and adding to the list
+            sequence.add(Integer.parseInt(numStr)); // Converting strings to integers and adding to the list we have
         }
 
         int n = sequence.size(), odd = 0, even = 0;
