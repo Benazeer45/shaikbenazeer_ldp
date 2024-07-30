@@ -3,20 +3,32 @@ import java.util.*;
 
 public class Alice_Bob {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         PrintWriter pw = new PrintWriter(System.out);
 
         // Reading the sequence directly from the user as a single line
         System.out.println("Enter the sequence of numbers separated by spaces:");
         String inputLine = sc.nextLine(); 
+        
+        // Check if the input string is empty
+        if (inputLine.trim().isEmpty()) {
+            throw new IllegalArgumentException("You need to provide a sequence of elements.");
+        }
+
         String[] inputArray = inputLine.split(" "); // Splitting the input line into individual strings
         List<Integer> sequence = new ArrayList<>();
         for (String numStr : inputArray) {
-            sequence.add(Integer.parseInt(numStr)); // Converting strings to integers and adding to the list we have
+            sequence.add(Integer.parseInt(numStr)); // Converting strings to integers and adding to the list
         }
 
-        int n = sequence.size(), odd = 0, even = 0;
+        int n = sequence.size();
+        if (n % 2 != 0) {
+            System.out.println("Please give an even length sequence.");
+            return;
+        }
+
+        int odd = 0, even = 0;
         for (int i = 0; i < n; i++) {
             if ((sequence.get(i) & 1) == 1) odd++;
             else even++;
