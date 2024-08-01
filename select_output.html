@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Meal Selection</title>
+</head>
+<body>
+  <form>
+    <label for="meal">Choose your meal:</label>
+    <select name="meal" id="meal" multiple size="4" autofocus required>
+      <option value="beef">Beef</option>
+      <option value="chicken" selected>Chicken</option>
+      <option value="fish" disabled>Fish (currently unavailable)</option>
+      <option value="vegetarian">Vegetarian</option>
+    </select>
+    <input type="submit" value="Submit" />
+  </form>
+</body>
+</html><br><br>
+
+
+<!--The <select> element creates a dropdown list where the user can select from among a number of <option> elements.
+    
+    --Attributes
+The attributes that can be used with the <select> element include:
+
+autofocus indicates the drop-down list gets the focus automatically when the page loads.
+disabled indicates that the drop-down list is disabled.
+form specifies the form that the drop-down list belongs to.
+multiple indicates that multiple options can be selected.
+name specifies the name of the drop-down list.
+required indicates that the drop-down list requires a selection before the form can be submitted.
+size specifies the number of options visible in the drop-down list.-->
+
+
+<!--The <option> element represents one possible selection in the dropdown created by the <select> tag.
+Attributes
+The attributes that can be used with the <option> tag include:
+
+disabled indicates that the option should be disabled.
+label specifies a shorter label for an option.
+selected indicates that the option is pre-selected when the page loads.
+value specifies the value to be sent when the option is selected.
+-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Output Element Example</title>
+</head>
+<body>
+  <!-- Example 1: Using <output> within a <form> -->
+  <form
+    oninput="result.value=parseInt(num1.value) + parseInt(num2.value)"
+    id="calc-form"
+  >
+    <label for="num1">Number 1:</label>
+    <input id="num1" type="number" value="0" /><br><br>
+
+    <label for="num2">Number 2:</label>
+    <input id="num2" type="number" value="0" /><br><br>
+
+    <label for="result">Sum:</label>
+    <output id="result" name="operation-result" for="num1 num2">0</output>
+  </form>
+ </output>
+</body>
+</html>
+
+<!--The <output> element displays the result of a calculation or user action.
+   It is commonly used inside of a <form> element to dynamically show the result of user input. However, the <output> element can be used on its own
+    
+    Attributes
+The <output> element takes the following attributes:
+
+for indicates the id of one or multiple elements (separated by a space) whose values are factored in the calculation.
+form indicates one or more forms the <output> element belongs to.
+name indicates the name of the element.-->

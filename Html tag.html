@@ -1,0 +1,275 @@
+<!--
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- This sets the title displayed in the browser tab or title bar -->
+    <title>My Portfolio | WebDev Studio</title>
+    <!-- This links to an external stylesheet file called main.css, which contains CSS rules to style the HTML content 
+     The <link> element connects the current web page with an external file such as a stylesheet or a library.
+     The two primary attributes are:
+A rel to describe the format of the external source.
+An href that contains the filepath to the external source.-->
+    <link rel="stylesheet" href="main.css" />
+    <link rel="apple-touch-icon" href="apple-icon-114.png" type="image/png" />
+    <!-- This links to an external JavaScript file called script.js, which contains JavaScript code to add interactivity or functionality -->
+    <script type="text/javascript" src="script.js"></script>
+  </head>
+  <body>
+    <!-- Main content for the portfolio will be added here -->
+  </body>
+</html>
+
+
+<!--The <meta> element represents an interface to provide metadata pertaining to the document. Metadata is data that is used to describe the document that contains it. 
+The <meta> element must be placed inside the <head> element of the document.
+    The <meta> element that has no closing tag, meaning that it cannot have elements inside of it. It uses attributes to set properties, some common attributes are:
+
+charset: describes the character encoding used when writing the document
+name: describes the type of meta tag, may include things like "author", "description", "keywords", and "color-scheme"
+content: accompanies name to provide the appropriate content specific to the value of name.
+
+
+    <!-- Sets the character set used to create this HTML file -->
+    <meta charset="utf-8" />
+    <!-- Details the author of the document -->
+    <meta name="author" content="Jasmine the Gorilla" />
+    <!-- Provides a description used to improve discovery in search engines -->
+    <meta
+      name="description"
+      content="A short fable about the origin of bananas, and the joy they provide."
+    />
+    <!-- Sets the color scheme to dark if possible, but lets the browser know that light will render correctly, too -->
+    <meta name="color-scheme" content="dark light" />  -->
+
+
+
+<h1>Hellohh</h1>
+<h1 id="A1">Hello World</h1>
+<h2>Welcome</h2>
+<h3>Html Learnings</h3>
+<h4>Study well</h4>
+<h5> Meet success</h5>
+<!--The <canvas> element in HTML provides a space on a webpage where you can draw graphics via scripting (usually JavaScript). 
+    It is a powerful tool for creating dynamic graphics such as charts, animations, and interactive graphics directly in the browser.-->
+<canvas>
+    <h3>
+      Your browser does not support the canvas element. Please update your browser or try a different one.
+    </h3>
+  </canvas>
+
+<div style="text-align:center;">
+    This is centered text.
+    <p>This is a centered paragraph</p>
+  </div>
+
+<!--The <cite> element represents a citation to a referenced work such as a book, a song, or a painting. 
+    It needs to include only the title of the work being referenced.-->
+    From
+    <cite
+      ><a href="https://en.wikipedia.org/wiki/Integral#Leibniz_and_Newton"
+        >Integral</a
+      ></cite
+    >, on Wikipedia.
+
+  <!-- Creating text links -->
+<a href="https://www.zemosolabs.com/">Visit this site</a>
+
+
+<br><a href="https://www.google.com" target="_blank">This anchor element links to google and will open in a new tab or window.</a>
+<!--The anchor element <a> can create hyperlinks to different parts of the same HTML document using the href attribute to point 
+    to the desired location with # followed by the id of the element to link to. -->
+
+    <p>
+        Next week, I'll be visiting the Louvre Museum to explore the incredible
+        art collections. Admiring the works of famous artists at the
+        <abbr title="Louvre Museum">Louvre</abbr>
+        will be an amazing experience!
+      </p>
+      <p>
+        Next month, I'll be visiting the British Museum to explore the history and culture of various civilizations. Viewing the ancient artifacts at the 
+        <acronym title="British Museum">BM</acronym>
+        will be a fascinating experience!
+      </p>
+            
+
+    <ol>
+        <li>Head east on Prince St</li>
+        <li>Turn left on Elizabeth</li>
+      </ol>
+      
+      <ul>
+        <li>Cookies</li>
+        <li>Milk</li>
+      </ul>
+
+
+          <input list="fruits" name="fruit-choice" id="fruit-choice" />
+          <datalist id="fruits">
+            <option value="Apple"></option>
+            <option value="Banana"></option>
+            <option value="Cherry"></option>
+            <option value="Date"></option>
+            <option value="Grapes"></option>
+            <option value="Orange"></option>
+          </datalist>
+      
+    <br><br>  
+
+<audio controls>
+    <source src="sample_audio.ogg" type="audio/ogg" />
+    <source src="sample_audio.mp3" type="audio/mpeg" />
+    <h3>Sorry, your browser does not support the audio element.</h3>
+</audio>  <br>    
+
+<video src="test-video.mp4" controls>
+    Video not supported
+</video>
+
+<p>This <em>word</em> will be emphasized in italics.</p>
+<p>The technical term for this element is the <i>Idiomatic Text</i> Element</p>
+<p>
+  You can use this element to indicate things such as <u>misspelt</u> words.
+</p>
+<div>
+    <h1>A section of grouped elements</h1>
+    <p>Here’s some text for the section</p>
+  </div>
+  <div>
+    <h1>Second section of grouped elements</h1>
+    <p>Here’s some text</p>
+  </div>
+
+  A line break haiku.<br>
+Poems are a great use case.<br>
+Oh joy! A line break.<br>
+
+<img src="C:\Users\DELL\Downloads\tag.png" alt="text describing image" />
+
+<p id="my-paragraph" style="color: green;">Here’s some text for a paragraph that is being altered by HTML attributes</p>
+
+<p>This is a <span style="color: red;">red</span> word in a sentence.</p>
+
+<p>This is <strong>important</strong> text!</p>
+
+<colgroup>
+    <col span="2" style="background-color:#EBC7B9;" />
+    <col style="background-color:#EBD0B9" />
+    <col style="background-color:#EBDEB9" />
+  </colgroup>
+
+<button>Click Me</button>
+<button type="button" disabled>Disabled Button</button>
+<button type="button" onclick="alert('Button clicked!')">Click Me</button>
+
+    <!-- Here <code> is being used with a <pre> tag to allow the formatted code to span multiple lines -->
+        <pre>
+            <code>function add(x, y) {
+              return x + y;
+            }</code>
+          </pre>
+
+
+
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Glossary of Terms</title>
+          </head>
+          <body>
+            <h1>Glossary of Terms</h1>
+            <dl>
+              <dt class="term"><b>Photosynthesis</b></dt>
+              <dd class="detail">
+                The process by which green plants and some other organisms use sunlight to
+                synthesize foods with the help of chlorophyll. It converts carbon dioxide and
+                water into glucose and oxygen.
+              </dd>
+          
+              <dt class="term">Ecosystem</dt>
+              <dd class="detail">
+                A biological community of interacting organisms and their physical environment.
+                It includes both the living organisms and the non-living components such as
+                air, water, and minerals.
+              </dd>
+          
+              <dt class="term">Biodiversity</dt>
+              <dd class="detail">
+                The variety of different types of life found on Earth, including the variety
+                within species, between species, and between ecosystems.
+              </dd>
+            </dl>
+          </body>
+          </html>
+          
+
+<!---The <embed> element renders an element that wraps around interactive content, including images, videos, and even other web pages. This is achieved with tools such as browser plug-ins. However, since most modern browsers no longer support plug-ins, there are other tags to use instead of <embed>. This includes:
+
+Playing video content with the <video> element.
+Displaying images with the <img> element.
+Rendering additional markup with the <iframe> element.-->
+
+    <embed type="image/jpg" src="C:\Users\DELL\Downloads\tag.png" width="300" height="200" /><br>
+
+    <font color="blue">This text is blue</font><br>
+    <font size="6">This size is 6</font><br>
+    <font face="Arial">This text is in Arial font</font><br><br><br>
+
+    <h1>Sign up for a new Codecademy account</h1>
+
+    <!-- This form will send the email and password to https://codecademy.com/sign-up using a POST request -->
+    <form action="https://codecademy.com/sign-up" method="POST">
+      <label>Email Address</label>
+      <input name="user_email" type="email" required />
+
+      <label>Password</label>
+      <input name="user_password" type="password" required />
+
+      <!-- Clicking a button with type submit will submit the form it is inside of -->
+      <button type="submit">Submit</button>
+    </form>
+
+ <!-- <iframe> is an element that uses attributes to define important properties. It should not contain any elements between the opening and closing tags. Common attributes are:
+src, which specifies the URL to embed
+height, which specifies the height of the <iframe> and defaults to 150 pixels
+width, which specifies the width of the <iframe> and defaults to 300 pixelsThis will add https://www.codecademy.com/learn to the current page in an embedded frame -->
+        <iframe
+        height="300"
+        width="300"
+        src="https://www.codecademy.com/learn"
+      ></iframe>
+
+
+<!--The <menu> element represents an unordered list of items with more semantic meaning than a regular <ul> element.-->
+      <menu>
+        <li><button onclick="like()">Like</button></li>
+        <li><button onclick="share()">Share</button></li>
+        <li><button onclick="subscribe()">Subscribe</button></li>
+      </menu>
+      
+
+
+<!--The <object> element represents some resource external to the HTML document.
+     This resource can be treated as an image, an embedded browsing context, or as content to be handled by a browser plugin.
+
+     Syntax
+<object type="MIME type" data="URL of resource"></object>
+
+The <object> element requires the following attributes to work properly:
+
+A type attribute that tells the browser what content media (MIME) type will be displayed. (“application/pdf”, “application/x-java-applet”, “audio/mp4”, etc.)
+A data attribute that contains the URL to the resource being used.-->
+
+<object
+  width="420"
+  height="315"
+  type="video/mp4"
+  data="https://www.youtube.com/v/138enunVlfs"
+></object>
+
+
+<p>
+  Roses are <span style="color: red;">Red</span>,<br />
+  Violets are <span style="color: blue;">Blue</span>,<br />
+  We think HTML is <span style="color: orange">awesome</span>!<br />
+  What about <span style="text-decoration: underline;">you</span>?
+</p>
