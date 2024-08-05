@@ -24,15 +24,23 @@ header {
 /* Navigation styles */
 nav {
     display: flex;
+    justify-content: center; /* Space between hamburger and navigation */
+    align-items: center; /* Center items vertically */
+    gap: 100px;
+    position: relative; /* Allows positioning of the hamburger menu */
+}
+
+nav ul {
+    display: flex;
     justify-content: center;
-    gap: 20px; /* Space between navigation items */
+    gap: 30px; /* Space between navigation items */
     flex-wrap: wrap; /* Allows wrapping if needed */
 }
 
 nav a {
     color: white;
     text-decoration: none; /* Remove underline */
-    font-size: 18px;
+    font-size: 25px;
     padding: 10px 15px;
     transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
 }
@@ -134,11 +142,56 @@ form button:hover {
     background-color: #9abc99;
 }
 
+
+/* Hamburger Menu Styles */
+.menu-toggle-checkbox {
+    display: none; /* Hide checkbox */
+}
+
+.menu-toggle-label {
+    display: none; /* Hide label */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle-label .bar {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+}
+
+/* Show menu when checkbox is checked */
+.menu-toggle-checkbox:checked + .menu-toggle-label + #nav-links {
+    display: flex; /* Show the menu */
+    gap: 5px;
+}
+
+@media (max-width: 770px) {
+    .menu-toggle-label {
+        display: flex; /* Show hamburger menu */
+    }
+
+    #nav-links {
+        display: none; /* Hide navigation links by default */
+        flex-direction: column; /* Stack links vertically */
+        width: 100%;
+        background-color: #166bd3; /* Same background as header */
+        position: absolute;
+        top: 60px; /* Adjust based on header height */
+        left: 0;
+    }
+
+    #nav-links a {
+        padding: 15px;
+        text-align: center;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     nav {
-        flex-direction: column; /* Stack navigation items vertically */
-        align-items: center; /* Center items horizontally */
+        flex-direction: column; /* Stack navigation items vertically on small screens */
     }
 
     nav a {
