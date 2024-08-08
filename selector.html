@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Selectors Overview</title>
+    <style>
+        /* 1. Type Selector */
+        h1 {
+            color: darkblue;
+        }
+
+        /* 2. Universal Selector */
+        * {
+            font-style: italic;
+        }
+
+        /* 3. Class Selector */
+        .highlight {
+            background-color: yellow;
+        }
+
+        /* 4. Multiple Classes */
+        .text-large {
+            font-size: 24px;
+        }
+        .text-red {
+            color: red;
+        }
+
+        /* 5. ID Selector */
+        #unique {
+            color: green;
+        }
+
+        /* 6. Attribute Selector */
+        a[target="_blank"] {
+            color: purple;
+        }
+
+        /* 7. Pseudo-class Selector */
+        a:hover {
+            color: orange;
+        }
+
+        /* 8. Classes and IDs */
+        .text-green {
+            color: green;
+        }
+        #bold {
+            font-weight: bold;
+        }
+
+        /* 9. Specificity */
+        p {
+            color: blue;
+        }
+        .highlight {
+            color: red;
+        }
+        #unique {
+            color: green;
+        }
+
+        /* 10. Chaining Selectors */
+        p.highlight {
+            color: purple;
+        }
+
+        /* 11. Descendant Combinator */
+        div p {
+            color: brown;
+        }
+
+        /* 12. Chaining and Specificity */
+        .highlight p.special {
+            color: red;
+        }
+
+        /* 13. Multiple Selectors */
+        h1, h2, p {
+            color: navy;
+        }
+    </style>
+</head>
+<body>
+    <!-- 1. Type Selector -->
+    <h1>Main Heading</h1>
+
+    <!-- 2. Universal Selector and 3. Class Selector -->
+    <div class="highlight">
+        <p>This paragraph has a yellow background due to the .highlight class.</p>
+    </div>
+
+    <!-- 4. Multiple Classes -->
+    <p class="text-large text-red">This paragraph is large and red.</p>
+
+    <!-- 5. ID Selector -->
+    <p id="unique">This paragraph is green because of the ID selector.</p>
+
+    <!-- 6. Attribute Selector -->
+    <a href="https://www.example.com" target="_blank">This link opens in a new tab and is purple.</a>
+    <a href="https://www.example.com">This link is not purple.</a>
+
+    <!-- 7. Pseudo-class Selector -->
+    <a href="#">Hover over this link to see it turn orange.</a>
+
+    <!-- 8. Classes and IDs -->
+    <p class="text-green" id="bold">This text is green and bold.</p>
+
+    <!-- 9. Specificity -->
+    <p>This text is blue, but with the class highlight, it will be red. With ID unique, it turns green.</p>
+
+    <!-- 10. Chaining Selectors -->
+    <p class="highlight">This paragraph is purple because of the combined class selector.</p>
+
+    <!-- 11. Descendant Combinator -->
+    <div>
+        <p>This paragraph is brown because it's inside a div.</p>
+    </div>
+
+    <!-- 12. Chaining and Specificity -->
+    <div class="highlight">
+        <p class="special">This paragraph is red because of the special class within a highlight div.</p>
+    </div>
+
+    <!-- 13. Multiple Selectors -->
+    <h1>This heading is navy.</h1>
+    <h2>This subheading is also navy.</h2>
+    <p>This paragraph is navy too.</p>
+</body>
+</html>

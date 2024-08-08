@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Box Model Example</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Container for layout demonstration */
+        .container {
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        /* Box Model Example */
+        .box {
+            width: 200px; /* Content width */
+            height: 150px; /* Content height */
+            padding: 20px; /* Space inside the border */
+            border: 5px solid #333; /* Border around the box */
+            margin: 30px; /* Space outside the border */
+            background-color: lightblue;
+            overflow: auto; /* Scroll if content overflows */
+            border-radius: 15px; /* Rounded corners */
+            min-width: 100px; /* Minimum width */
+            max-width: 300px; /* Maximum width */
+            min-height: 50px; /* Minimum height */
+            max-height: 200px; /* Maximum height */
+        }
+
+        /* Additional Box with different margins */
+        .box-alt {
+            margin: 20px 40px 60px 80px; /* Shorthand margin: top right bottom left */
+            background-color: lightcoral;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Box with only horizontal centering using auto margin */
+        .box-center {
+            width: 200px;
+            margin: 0 auto; /* Center horizontally */
+            background-color: lightseagreen;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Box demonstrating the CSS Box Model -->
+        <div class="box">
+            <p>This box covers various CSS Box Model properties:</p>
+            <ul>
+                <li>Content Area</li>
+                <li>Padding</li>
+                <li>Border</li>
+                <li>Margin</li>
+                <li>Overflow</li>
+                <li>Border Radius</li>
+                <li>Min/Max Dimensions</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Box with different margins -->
+    <div class="box-alt">
+        Box with different margin values.
+    </div>
+
+    <!-- Centered Box -->
+    <div class="box-center">
+        Centered box using auto margins.
+    </div>
+</body>
+</html>
