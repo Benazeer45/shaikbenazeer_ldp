@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Form Example</title>
+    <link rel="stylesheet" href="forms.css">
+
+</head>
+<body>
+    <form action="/submit" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name"><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="0" max="120"><br><br>
+
+        <label for="volume">Volume:</label>
+        <input type="range" id="volume" name="volume" min="0" max="100" step="1"><br><br>
+
+        <label>
+            <input type="checkbox" id="subscribe" name="subscribe">
+            Subscribe to newsletter
+        </label><br><br>
+
+        <label>
+            <input type="radio" name="gender" value="male">
+            Male
+        </label>
+        <label>
+            <input type="radio" name="gender" value="female">
+            Female
+        </label><br><br>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+            <option value="us">United States</option>
+            <option value="ca">Canada</option>
+            <option value="uk">United Kingdom</option>
+        </select><br><br>
+
+        <label for="browser">Choose your browser:</label>
+        <input list="browsers" id="browser" name="browser">
+        <datalist id="browsers">
+            <option value="Chrome">
+            <option value="Firefox">
+            <option value="Safari">
+            <option value="Edge">
+            <option value="Opera">
+        </datalist><br><br>
+
+        <label for="comments">Comments:</label>
+        <textarea id="comments" name="comments" rows="4" cols="50"></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html><br><br><br>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation Example</title>
+</head>
+<body>
+    <form action="/submit" method="post">
+        <!-- Required Field -->
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" 
+               pattern="(?=.*[a-zA-Z])(?=.*\d).+" 
+               title="Username must contain both letters and numbers" 
+               required>
+        <br><br>
+
+        <!-- Number Input with Min and Max -->
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" min="0" max="80" required>
+        <br><br>
+
+        <!-- Text Length -->
+        <label for="password">Password (8-20 characters):</label>
+        <input type="password" id="password" name="password" 
+               pattern="(?=.*[a-zA-Z])(?=.*\d).{8,20}" 
+               title="Password must be 8-20 characters long and contain both letters and numbers" 
+               required>
+        <br><br>
+
+        <!-- Pattern Matching -->
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+        <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
+

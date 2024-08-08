@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Will load and run file "deferred_app.js" only once the body below is fully loaded into memory -->
+  <script defer src="deferred_app.js"></script>
+
+  <!-- Will load and run file "async_app.js" as soon as it finishes loading -->
+  <script async src="async_app.js"></script>
+
+  <!-- Will run before the body finishes loading into memory -->
+  <script>
+    console.log('Goodbye, World!');
+  </script>
+</head>
+<body>
+  <h1>Hello, World!</h1>
+  <p>
+    Traditionally, a Hello World application represents the first step a new
+    programmer takes into learning a new language.
+  </p>
+
+  <!-- Will naturally run after the other body content is fully loaded into memory -->
+  <script>
+    console.log('Hello, World!');
+  </script>
+</body>
+</html>

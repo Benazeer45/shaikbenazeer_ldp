@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Input Element Attributes</title>
+</head>
+<body>
+  <form>
+    <!-- Text Input -->
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" maxlength="50" minlength="2" required placeholder="Enter your name"><br><br>
+
+    <!-- Email Input -->
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required placeholder="Enter your email"><br><br>
+
+    <!-- Password Input -->
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" maxlength="20" minlength="6" required placeholder="Enter your password"><br><br>
+
+    <!-- Checkbox Input -->
+    <label for="subscribe">
+      <input type="checkbox" id="subscribe" name="subscribe" checked>
+      Subscribe to newsletter
+    </label><br><br>
+
+    <!-- Radio Buttons -->
+    <label>Gender:</label><br>
+    <label for="male">
+      <input type="radio" id="male" name="gender" value="male">
+      Male
+    </label><br>
+    <label for="female">
+      <input type="radio" id="female" name="gender" value="female">
+      Female
+    </label><br><br>
+
+    <!-- Number Input -->
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" min="1" max="100" required placeholder="Enter your age"><br><br>
+
+    <!-- Range Input -->
+    <label for="volume">Volume:</label>
+    <input type="range" id="volume" name="volume" min="0" max="100" value="50"><br><br>
+
+    <!-- Date Input -->
+    <label for="birthdate">Birthdate:</label>
+    <input type="date" id="birthdate" name="birthdate" required><br><br>
+
+    <!-- Time Input -->
+    <label for="appointment">Appointment Time:</label>
+    <input type="time" id="appointment" name="appointment"><br><br>
+
+    <!-- File Input -->
+    <label for="resume">Upload Resume:</label>
+    <input type="file" id="resume" name="resume"><br><br>
+
+    <!-- Submit Button -->
+    <input type="submit" value="Submit">
+  </form>
+</body>
+</html>
+
+<!--The <input> element has no closing tag, meaning that it cannot have elements inside of it.
+
+Attributes
+Some common attributes used to set properties for the <input> element are shown below:
+
+Attribute	Data Type	Description
+autocomplete	String	Allows the browser to help the user fill in the field with previously typed data.
+checked	Boolean	Used with radio buttons to indicate which one is currently selected, and checkboxes to indicate if it is currently checked.
+disabled	Boolean	Marks the input field so that it will not accept input.
+max	Number/String	Sets the maximum value for numeric inputs, ranges, dates, and times.
+min	Number/String	Sets the minimum value for numeric inputs, ranges, dates, and times.
+maxlength	Integer	Sets the maximum length of text, email, and password inputs.
+minlength	Integer	Sets the minimum length of text, email, and password inputs.
+required	Boolean	Specifies that the field must include a value. Can be written as required="true" or as just required.
+type	String	Represents the input type, including common values like:
+text: Creates a single-line text box.
+email: Creates a single-line text box that can validate email addresses.
+password: Creates a single-line text box that hides the input from view.
+checkbox: Creates a box that can be selected/deselected.
+radio: creates a radio button allowing a user to select one choice from many options.
+number: Creates a text box that accepts numeric inputs only.
+range: Creates a slider that can accept values from a certain range.
+date: Creates a calendar picker to choose a date.
+time: Creates a text field for entering valid times.
+file: Creates a button that allows the user to send a file with the other form data.
+submit: Creates a button to submit a form.-->
+
+
+<!--The <label> element is used to identify captions for other elements
+     the <label> element uses the following attributes:
+A for attribute to match the id of one or both of the following:
+A single, valid control element that is nested within the <label> element.
+One or more control elements that exist elsewhere in the document, outside the <label> element.
+A form attribute that binds the <label> to a <form> element with a matching id.-->
