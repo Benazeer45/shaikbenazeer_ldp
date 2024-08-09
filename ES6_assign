@@ -11,8 +11,8 @@ console.log(printName("Benny")); // Output: Hi Alice
 //Question-2
 // Rewrite the following code using template literals
 // const printBill = (name, bill) => {
-//                      return “Hi “ + name + “, please pay: “ + bill;
-//            }
+//               return “Hi “ + name + “, please pay: “ + bill;
+//        }
 //answer
 const printBill = (name, bill) => `Hi ${name}, please pay: ${bill}`;
 console.log(printBill("Benny",300));  //Hi Benny, please pay: 300
