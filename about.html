@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Shaik Benazeer</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Profile Container */
+        .profile-container {
+            display: flex; /* Use flexbox for layout */
+            align-items: center; /* Align items vertically center */
+            justify-content: space-between; /* Space between photo and text */
+            text-align: left; /* Align text to the left */
+            margin-bottom: 30px; /* Space below the profile section */
+        }
+
+        .profile-photo {
+            width: 500px; /* Adjust width as needed */
+            height: 450px; /* Adjust height as needed */
+            border-radius: 50%; /* Circular photo */
+            border: 5px solid #12171d; /* Border color matching header */
+            margin-left: 20px; /* Space between photo and text */
+        }
+
+        .profile-text {
+            max-width: 600px; /* Ensure text doesn't exceed a certain width */
+            text-align: justify; /* Justify alignment */
+            line-height: 1.6; /* Improve readability */
+        }
+
+        .profile-text p {
+            margin-bottom: 15px; /* Space between paragraphs */
+        }
+
+        .profile-text h2 {
+            color: #166bd3; /* Header color matching the navigation */
+        }
+
+        /* About Sections */
+        section {
+            background-color: #eaf1f8; /* Light blue background for sections */
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #166bd3; /* Header color matching the navigation */
+            margin-bottom: 15px;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #166bd3;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Flexbox for heading and contact icons */
+        .heading-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .heading-container h1 {
+            margin: 0;
+        }
+
+        .contact-details {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Space between icons */
+        }
+
+        .contact-details a {
+            color: #166bd3;
+            font-size: 24px; /* Icon size */
+            text-decoration: none;
+        }
+
+        .contact-details a:hover {
+            color: #0a3b5f; /* Darker color on hover */
+        }
+    </style>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
+        <label for="menu-toggle" class="menu-toggle-label">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </label>
+        <nav id="nav-links">
+            <a href="home.html">Home</a>
+            <a href="about.html" class="active">About</a>
+            <a href="gallery.html">Gallery</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+    <main>
+        <div class="heading-container">
+            <h1>About Me</h1>
+            <div class="contact-details">
+                <a href="https://www.linkedin.com/in/shaik-benazeer" target="_blank" title="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/shaikbenazeer" target="_blank" title="GitHub Profile"><i class="fab fa-github"></i></a>
+                <a href="mailto:shaikbenazeer@example.com" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="tel:+917989012345" title="Call Me"><i class="fas fa-phone-alt"></i></a>
+            </div>
+        </div>
+        
+
+        <div class="profile-container">
+            <div class="profile-text">
+                <p><strong>Name:</strong> Shaik Benazeer</p>
+                <p><strong>College:</strong> SRKR Engineering College, known for its rigorous Computer Science programs and vibrant campus life.</p>
+                <p><strong>Current Position:</strong> Developer Intern at Zemoso Technologies Pvt Ltd. I am working on various software development projects, gaining hands-on experience with cutting-edge technologies.</p>
+                <p><strong>Education:</strong> Pursuing a Bachelor of Technology (BTech) in Computer Science and Engineering, with a focus on software development and emerging technologies.</p>
+                <p><strong>Interests:</strong> Apart from technology, I have a keen interest in photography, painting, and exploring new cultures through travel.</p>
+            </div>
+            <img src="gallery/self.jpg" alt="Shaik Benazeer" class="profile-photo">
+        </div>
+
+        <section>
+            <h2>Technical Skills</h2>
+            <ul>
+                <li>Programming Languages: Python, Java, C, C++</li>
+                <li>Web Technologies: HTML, CSS, JavaScript</li>
+                <li>Frameworks: React, Node.js, Spring</li>
+                <li>Skills: Communication, Leadership</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Experience</h2>
+            <p><strong>Internship at Hexart, Hyderabad (3 months)</strong></p>
+            <p>During my internship at Hexart, I focused on data science. My main project involved developing a site related to respiratory diseases. This included:</p>
+            <ul>
+                <li>Analyzing data to identify patterns and insights related to respiratory diseases.</li>
+                <li>Developing a website to present the findings and provide valuable resources.</li>
+                <li>Utilizing programming languages and tools relevant to data science for project implementation.</li>
+            </ul>
+
+            <p><strong>Current Position: Developer Intern at Zemoso Technologies Pvt Ltd</strong></p>
+            <p>As a Developer Intern at Zemoso, I am currently involved in a range of tasks and projects, including:</p>
+            <ul>
+                <li>Developing and testing software solutions in various programming languages and frameworks.</li>
+                <li>Working on both front-end and back-end development tasks.</li>
+                <li>Engaging in code reviews and contributing to the continuous improvement of development processes.</li>
+            </ul>
+            <p>My role emphasizes the following key principles:</p>
+            <ul>
+                <li>Commitment</li>
+                <li>Collaboration</li>
+                <li>Communication</li>
+                <li>Learning</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Address</h2>
+            <p>Bhimavaram, West Godavari, Andhra Pradesh</p>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Shaik Benazeer</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,208 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Light grey background for the entire page */
+    margin: 0; /* Remove default body margin */
+    padding: 0; /* Remove default body padding */
+    position: relative; /* Allow the footer to be positioned relative to the body */
+    min-height: 100vh; /* Ensure body takes at least the full height of the viewport */
+}
+
+/* Header with fixed position */
+header {
+    background-color: #166bd3; /* Dark background for the header */
+    color: white;
+    padding: 10px 20px; /* Padding for the header */
+    position: fixed; /* Fixes the header at the top */
+    width: 100%; /* Full width */
+    top: 0; /* Position at the top */
+    left: 0; /* Position at the left edge */
+    z-index: 1000; /* Ensure header is above other content */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Optional shadow for better visibility */
+}
+
+/* Navigation styles */
+nav {
+    display: flex;
+    justify-content: center; /* Space between hamburger and navigation */
+    align-items: center; /* Center items vertically */
+    gap: 100px;
+    position: relative; /* Allows positioning of the hamburger menu */
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Space between navigation items */
+    flex-wrap: wrap; /* Allows wrapping if needed */
+}
+
+nav a {
+    color: white;
+    text-decoration: none; /* Remove underline */
+    font-size: 25px;
+    padding: 10px 15px;
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+}
+
+nav a.active {
+    background-color: #37d33c; /* Green color for active link */
+    color: white; /* Ensure text is readable on green */
+    border-radius: 5px; /* Rounded corners for the active link */
+}
+
+nav a:hover {
+    background-color: #37d33c; /* Green color on hover */
+    color: #ffeb3b; /* Highlight color on hover */
+}
+
+/* Adjust the main content to avoid overlap with the fixed header */
+main {
+    padding: 80px 20px 20px; /* Add top padding to account for the fixed header */
+    background-color: #ffffff; /* White background for the main content area */
+    max-width: 1200px;
+    margin: 0 auto; /* Center the container horizontally */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-bottom: 100px; /* Increase space at the bottom to accommodate footer */
+}
+
+/* Footer styles */
+footer {
+    background-color: #1a1a1a51; /* Dark background for the footer */
+    color: white;
+    text-align: center;
+    padding: 1px 0; /* Increase padding for better visibility */
+    position: absolute; /* Position it at the bottom of the page */
+    width: 100%;
+    bottom: 0;
+    left: 0;
+}
+
+/* Ensure all images in the gallery are the same size */
+.gallery img {
+    width: 280px;  /* Set the width you want */
+    height: 200px; /* Set the height you want */
+    object-fit: cover; /* Ensure images fit the dimensions without distortion */
+    margin: 5px; /* Optional: Adds space between images */
+}
+
+/* General Styling Enhancements */
+h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 2em;
+    color: #444;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+p {
+    font-size: 1.2em;
+    color: #555;
+    line-height: 1.6;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+form input, form textarea, form select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #333;
+    color: white;
+    padding: 12px 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px; /* Rounded corners for the button */
+}
+
+form button:hover {
+    background-color: #9abc99;
+}
+
+
+/* Hamburger Menu Styles */
+.menu-toggle-checkbox {
+    display: none; /* Hide checkbox */
+}
+
+.menu-toggle-label {
+    display: none; /* Hide label */
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle-label .bar {
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 5px 0;
+}
+
+/* Show menu when checkbox is checked */
+.menu-toggle-checkbox:checked + .menu-toggle-label + #nav-links {
+    display: flex; /* Show the menu */
+    gap: 5px;
+}
+
+@media (max-width: 770px) {
+    .menu-toggle-label {
+        display: flex; /* Show hamburger menu */
+    }
+
+    #nav-links {
+        display: none; /* Hide navigation links by default */
+        flex-direction: column; /* Stack links vertically */
+        width: 100%;
+        background-color: #166bd3; /* Same background as header */
+        position: absolute;
+        top: 60px; /* Adjust based on header height */
+        left: 0;
+    }
+
+    #nav-links a {
+        padding: 15px;
+        text-align: center;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column; /* Stack navigation items vertically on small screens */
+    }
+
+    nav a {
+        font-size: 16px; /* Smaller font size for smaller screens */
+        padding: 8px 12px; /* Adjust padding for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    nav a {
+        font-size: 14px; /* Even smaller font size for very small screens */
+        padding: 6px 10px; /* Further adjust padding */
+    }
+}
