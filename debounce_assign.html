@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Bar Optimization</title>
+    <style>
+        /* Optional: Basic styling */
+        #results {
+            list-style-type: none;
+            padding: 0;
+        }
+        #results li {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="search-bar" placeholder="Search..." />
+    <ul id="results"></ul>
+
+    <script>
+        // Sample data for search
+        const colors = ['Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Orange', 'Pink'];
+        const fruits = ['Apple', 'Banana', 'Cherry', 'Date', 'Fig', 'Grape', 'Kiwi'];
+
+        // Combine colors and fruits into one list
+        const items = [...colors, ...fruits];
+
+        // Throttle function
+        const throttleFunc = (func, interval) => {
+            let lastCall = 0;
+            return function(...args) {
+                const now = Date.now();
+                if (now - lastCall >= interval) {
+                    lastCall = now;
+                    func.apply(this, args);
+                }
+            }
+        };
+
+        // Debounce function
+        const debounceFunc = (func, delay) => {
+            let timer;
+            return function(...args) {
+                const context = this;
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    func.apply(context, args);
+                }, delay);
+            }
+        };
+
+        // Search handler
+        const searchHandler = (event) => {
+            const value = event.target.value.toLowerCase();
+            console.log('Search Query:', value);
+            const results = items.filter(item => item.toLowerCase().includes(value));
+            displayResults(results);
+        };
+
+        // Display results in the <ul> element
+        const displayResults = (results) => {
+            const resultsElement = document.getElementById('results');
+            if (results.length === 0) {
+                resultsElement.innerHTML = '<li>No results found</li>';
+            } else {
+                resultsElement.innerHTML = results.map(item => `<li>${item}</li>`).join('');
+            }
+        };
+
+        // Display all items initially
+        displayResults(items);
+
+        // Optimize searchHandler with debouncing
+        const debouncedSearchHandler = debounceFunc(searchHandler, 500);
+
+        // Attach debouncedSearchHandler to the input element
+        document.getElementById('search-bar').addEventListener('input', debouncedSearchHandler);
+    </script>
+</body>
+</html>
