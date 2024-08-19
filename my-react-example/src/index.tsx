@@ -11,6 +11,7 @@ import './index.css';
 import App from './App';
 import MyApp from './MyApp';
 import Profile from './Profile';
+import Jsx from './JSX';
 import ShoppingList from './ShoppingList';
 import EventExamples from './EventExamples';
 import Counter from './Counter';
@@ -32,6 +33,7 @@ root.render(
     {/* Rendering multiple components in the application */}
     <MyApp />
     <Profile />
+    <Jsx />
     <ShoppingList />
     <EventExamples />
     <Counter />
