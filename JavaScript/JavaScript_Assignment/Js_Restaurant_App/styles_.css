@@ -1,0 +1,442 @@
+body {
+    font-family: Garamond;
+    margin: 0;
+    padding: 0;
+    background-color: #80e48e;
+}
+
+header {
+    background-color: #d8115a;
+    color: white;
+    text-align: center;
+    padding: 1px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+#container {
+    display: flex;
+    height: calc(100vh - 50px);
+}
+
+#tables, #menu {
+    padding: 10px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+#tables {
+    font-size: 18px;
+    width: 25%;
+    border-right: 2px solid #0c0c0c;
+}
+
+#menu {
+    width: 75%;
+}
+
+#tables h2, #menu h2 {
+    font-size: 35px;
+    text-align: center;
+}
+
+/* Style for search bar */
+#searchTable, #searchMenu {
+    display: inline-block;
+    padding: 10px;
+    font-size: 18px;
+    border: 2px solid #141313;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+#searchTable {
+    min-width: 20px;
+}
+
+#searchMenu {
+    min-width: 500px;
+}
+
+/* Search bar wrapper */
+.search-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.search-wrapper input {
+    display: inline-block;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    width: 200px; /* Adjust as needed */
+}
+
+.clear-icon {
+    position: absolute;
+    right: 10px;
+    top: 40%;
+    transform: translateY(-50%);
+    font-size: 30px;
+    color: #8e7f7f;
+    cursor: pointer;
+    display: none;
+}
+
+.search-wrapper input:focus + .clear-icon,
+.search-wrapper input:not(:placeholder-shown) + .clear-icon {
+    display: block;
+}
+
+.table-card {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.table-card.highlighted {
+    background-color: rgb(47, 255, 0);
+}
+
+/* Additional CSS for category text */
+.item-category {
+font-size: 1.0em; /* Smaller font size */
+color: rgb(226, 17, 17);      /* Optional: Change the color to gray */
+margin-left: 5px; /* Adds space between the item name and category */
+}
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        .item-price {
+            margin-left: auto;
+            padding-left: 10px;
+        }
+
+#menuList {
+    list-style: none;
+    padding: 0;
+}
+
+#menuList li {
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    min-height: 50px;
+}
+
+#menuList .item-name {
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+}
+
+.modal-header h3 {
+    margin: 0;
+}
+
+.clear-icon {
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+}
+
+.clear-icon:hover {
+    color: red;
+}
+
+
+#menuList .item-price {
+    display: block;
+    font-size: 18px;
+    color: #666;
+}
+
+.category-heading {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.menuNoResultsMessage {
+    text-align: center;
+    font-size: 30px;
+    color: #f71010;
+    padding: 30px;
+}
+
+/* Modal Styles */
+.modal {
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 50px;
+    bottom: 50px;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    font-size: 18px;
+    margin: 10% auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 45%;
+    max-width: 900px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 8px;
+}
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8px 8px 0 0;
+}
+
+.modal-header h2 {
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    font-size: 18px;
+}
+
+.close {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #e81313;
+}
+
+.modal-body {
+    padding: 20px;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.modal-footer {
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+    text-align: right;
+}
+
+.order-details-table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.order-details-table th, .order-details-table td {
+    padding: 10px;
+    text-align: center;
+}
+
+.order-details-table th {
+    background-color: #f2f2f2;
+}
+
+.order-details-table .total-row {
+    font-weight: bold;
+}
+
+.order-details-table .total {
+    text-align: center;
+    padding-top: 10px;
+}
+/* Styles for the order details table */
+#orderDetails {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+#orderDetails th, #orderDetails td {
+    padding: 10px;
+    text-align: center;
+}
+
+#orderDetails th {
+    background-color: #f2f2f2;
+}
+
+#orderDetails .order-detail-sno,
+#orderDetails .order-detail-item,
+#orderDetails .order-detail-price,
+#orderDetails .order-detail-actions {
+    padding: 5px;
+}
+
+#orderDetails .order-detail-sno {
+    width: 10%;
+    text-align: center;
+}
+
+#orderDetails .order-detail-item {
+    width: 20%;
+}
+
+#orderDetails .order-detail-price {
+    width: 20%;
+    text-align: center; /* Align price to the right */
+}
+
+#orderDetails .order-detail-actions {
+    width: 20%;
+    text-align: center;
+}
+
+
+/* Ensure proper alignment for quantity container */
+.quantity-container {
+    display: flex;
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    padding: 10px; /* Optional: For spacing inside the container */
+    width: 300px; /* Optional: Set a fixed width */
+}
+
+/* Styling for the first child */
+.quantity-container > :first-child {
+    flex-direction: column; /* Stack children vertically */
+    text-align: left;
+    width: 50%; /* Optional: Make it span the container width */
+}
+
+/* Styling for the second child */
+.quantity-container > :nth-child(2) {
+    width: 100%; /* Optional: Make it span the container width */
+}
+
+.quantity-container .quantity {
+    border: none;
+    text-align: center;
+    width: 60px;
+    font-size: 16px;
+    margin-right:10px;
+    outline: none;
+}
+
+/* Custom styles to enhance visibility */
+.quantity-container input[type="number"]::-webkit-inner-spin-button {
+    opacity: 1; /* Ensure the up and down arrows are visible */
+}
+
+.quantity-container .quantity-heading {
+    display: inline-block;
+    margin-right: 1px;
+    color: black
+}
+
+.quantity-container .quantity-heading.active {
+    color: blue;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 999;
+}
+
+.table-card:hover {
+    background-color: #71a8e0;
+    cursor: pointer;
+}
+
+#menuList li:hover {
+    background-color:  #f8e3bb;
+    cursor: pointer;
+}
+
+input.number {
+    color: blue;
+}
+
+input[type="number"] {
+    border: none;
+    text-align: center;
+}
+
+
+.dustbin {
+    cursor: pointer;
+    color: red;
+    font-size: 20px; /* Increase the font size for the dustbin icon */
+    margin-left:10px;
+}
+
+
+/* Adjustments for modal responsiveness */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 90%;
+    }
+
+    .modal-header h2 {
+        font-size: 25px;
+    }
+
+    .close {
+        font-size: 25px;
+    }
+}
+
+
+#searchTable:focus, #searchMenu:focus {
+    outline: 2px solid #0056b3;
+    border-color: #0056b3;
+}
+.generate-bill-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-session-btn:hover {
+    background-color: #0056b3;
+}
