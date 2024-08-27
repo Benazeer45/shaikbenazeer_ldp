@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Billing System</title>
+    <link rel="stylesheet" href="styles_.css">
+</head>
+<body>
+    <header>
+        <h1>Restaurant Billing System</h1>
+    </header>
+    <div id="overlay"></div>
+    
+    <!-- Modal for Order Details -->
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Table - X | Order Details</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <table id="orderTable">
+                    <thead>
+                        <tr>
+                            <th>S. No</th>
+                            <th>Item</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderDetails">
+                        <!-- Order details will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>       
+
+    <div id="container">
+        <!-- Tables Section -->
+        <section id="tables">
+            <h2>Tables</h2>
+            <div id="tableFilters">
+                <div class="search-wrapper">
+                    <input type="text" id="searchTable" placeholder="Search tables">
+                    <span class="clear-icon" id="clearTableSearch">&times;</span>
+                </div>
+            </div>
+            <div id="tablesContainer">
+                <!-- Dynamic table cards will be inserted here by JavaScript -->
+            </div>
+        </section>
+        
+        <!-- Menu Section -->
+        <section id="menu">
+            <h2>Menu</h2>
+            <div id="filters">
+                <div class="search-wrapper">
+                    <input type="text" id="searchMenu" placeholder="Search menu...by course, by food">
+                    <span class="clear-icon" id="clearMenuSearch">&times;</span>
+                </div>
+            </div>
+            <ul id="menuList">
+                <!-- Dynamic menu items will be inserted here by JavaScript -->
+            </ul>
+        </section>
+    </div>
+</body>
+<script src="tables_data.js" defer></script>
+<script src="menu_data.js" defer></script>
+<script src="create_table.js" defer></script>
+<script src="create_menu.js" defer></script>
+<script src="menu_search.js" defer></script>
+<script src="table_search.js" defer></script>
+<script src="drag_drop.js" defer></script>
+<script src="open_modal.js" defer></script>
+<script src="quantity_change.js" defer></script>
+<script src="update_modal.js" defer></script>
+<script src="close_session.js" defer></script>
+</html>
