@@ -1,0 +1,85 @@
+import React from 'react';
+import HomeImage from '../../../assets/icons/home-2.svg'; // Import HomeImage
+import SeederImage from '../../../assets/icons/icon1.svg'; // Import SeederImage
+import WatchHowToImage from '../../../assets/icons/flash.svg'; // Import WatchHowToImage
+import CashAccelerationImage from '../../../assets/icons/coin.svg'; // Import CashAccelerationImage
+import { NavLink } from '../../molecules/NavLink';
+
+const TextItem: React.FC<{ imageSrc: string; text: string; isSeeder?: boolean }> = ({ imageSrc, text, isSeeder }) => (
+  <div style={{
+    width: '210px',
+    height: '49px',
+    gap: '12px',
+    display: 'flex',
+    alignItems: 'center',
+    padding: '0 12px',
+    fontFamily: 'Gilroy-Bold' , // Apply Gilroy-Bold font only for Seeder
+    fontWeight: isSeeder ? 700 : 600,
+    fontSize: isSeeder ? '24px' : '14px', // Apply different font sizes
+    lineHeight: isSeeder ? '29.71px' : '14px',
+    color: isSeeder ? '#E8E7F0' : '#A5A5A6', // Apply different colors
+    textAlign: 'right',
+  }}>
+    <img src={imageSrc} alt={`${text} Icon`} style={{ width: '24px', height: '24px' }} />
+    {text}
+  </div>
+);
+
+// Define a component for the NavLink item
+const NavLinkItem: React.FC<{ imageSrc: string; text: string }> = ({ imageSrc, text }) => (
+  <NavLink 
+    text={text} 
+    active={true} 
+    icon={<img src={imageSrc} alt={`${text} Icon`} style={{ width: '24px', height: '24px' }} />}
+    style={{
+      width: '210px',
+      height: '49px',
+      borderRadius: '12px',
+      gap: '12px',
+      backgroundColor: '#D4D2D3',
+      color: '#A5A5A6',
+      fontSize: '14px',
+      fontWeight: 600,
+      lineHeight: '14px',
+      letterSpacing: '0.01em',
+      textAlign: 'right',
+      display: 'flex',
+      alignItems: 'center',
+      fontFamily: 'Gilroy-Bold', // Apply Gilroy-Bold font
+    }} 
+  />
+);
+
+export const SeederInput: React.FC = () => {
+    return (
+        <div style={{
+            width: '200px',
+            height: '768px',
+            borderTop: '0px',
+            borderRight: '1px solid #222124',
+            borderBottom: '0px',
+            borderLeft: '0px',
+            padding: '25px 20px 20px 25px',
+            gap: '40px',
+            backgroundColor: '#201F24',
+            boxShadow: '1px 1px 0px rgba(0, 0, 0, 0.1)', // Adjust box shadow to match elevation if necessary
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between'
+        }}>
+            <div>
+                {/* Use TextItem component for Seeder with special styling */}
+                <TextItem imageSrc={SeederImage} text="Seeder" isSeeder={true} /> {/* Replaced SeederItem */}
+                <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <TextItem imageSrc={HomeImage} text="Home" /> {/* Replaced HomeItem */}
+                    {/* Use NavLinkItem for Cash Acceleration */}
+                    <NavLinkItem imageSrc={CashAccelerationImage} text="Cash Acceleration" /> 
+                </div>
+            </div>
+            <div>
+                {/* Use TextItem component for Watch How To */}
+                <TextItem imageSrc={WatchHowToImage} text="Watch How To" /> {/* Replaced WatchHowToItem */}
+            </div>
+        </div>
+    );
+};
