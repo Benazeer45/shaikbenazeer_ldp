@@ -3,7 +3,7 @@
 import React from 'react';
 import TodoTemplate from '../../components/templates/todoTemplate';
 import TodoApp from '../../components/organisms/TodoApp';
-import { HEADER_CONTENT, FOOTER_CONTENT } from '../../utils';
+import { HEADER_CONTENT, FOOTER_CONTENT } from '../../utils/constants';
 
 const Home: React.FC = () => {
   return (

@@ -1,0 +1,12 @@
+{
+  "name": "shaikbenazeer_ldp",
+  "version": "1.0.0",
+  "description": "shaikbenazeer_ldp is a Repository for Developer tutorials",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

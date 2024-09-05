@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../atoms/Button';
 import Text from '../../atoms/Text';
+import { HEADER_CONTENT, PARAGRAPH_CONTENT, TASK_1, TASK_2, TASK_3, BUTTON_TEXT } from '../../utils/constants';
 
 interface DescriptionProps {
   onOpenTodoList: () => void;
@@ -9,15 +10,15 @@ interface DescriptionProps {
 const Description: React.FC<DescriptionProps> = ({ onOpenTodoList }) => {
   return (
     <div className="description">
-      <Text type="heading" content="To-Do List Application" />
-      <Text type="paragraph" content="This application allows you to manage your tasks efficiently. Here are the key functionalities:" />
+      <Text type="heading" content={HEADER_CONTENT} />
+      <Text type="paragraph" content={PARAGRAPH_CONTENT} />
       <ul className="description-list">
-        <li>Add new tasks to your to-do list.</li>
-        <li>Double-click on a task to edit it.</li>
-        <li>Click the checkbox to mark tasks as completed and strike through them.</li>
+        <li>{TASK_1}</li>
+        <li>{TASK_2}</li>
+        <li>{TASK_3}</li>
       </ul>
       <Button onClick={onOpenTodoList}>
-        Open To-Do List →
+        {BUTTON_TEXT}
       </Button>
     </div>
   );
