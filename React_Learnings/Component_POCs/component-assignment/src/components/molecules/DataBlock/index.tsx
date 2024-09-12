@@ -1,14 +1,14 @@
 import React from 'react';
 import Heading from '../../atoms/Typography';
 
-interface DataBlockProps {
+interface CashAccelerationGridItemsProps {
   icon: React.ReactNode;
   title: string;
   subtitle: string;
   extraIcon?: React.ReactNode; // Add extraIcon prop
 }
 
-export const DataBlock: React.FC<DataBlockProps> = ({ icon, title, subtitle, extraIcon }) => {
+const CashAccelerationGridItems: React.FC<CashAccelerationGridItemsProps> = ({ icon, title, subtitle, extraIcon }) => {
   return (
     <div style={{
       width: '204px',
@@ -53,3 +53,5 @@ export const DataBlock: React.FC<DataBlockProps> = ({ icon, title, subtitle, ext
     </div>
   );
 };
+
+export default CashAccelerationGridItems

@@ -1,14 +1,14 @@
 import React from 'react';
 import { SeederInput } from '../../organisms/SideNavBar';
-import { HeaderSection } from '../../organisms/HeaderSection';
-import { DisplayData } from '../../organisms/CardInfo'; // Import DisplayData
-import FormattedSection from '../../organisms/FormattedSection'; // Import FormattedSection
+import CashAccelerationGridContainer from '../../organisms/CardInfo';
+import CashKickCard from '../../organisms/CashKickCard';
+import Header from '../../organisms/Header';
 
 export const MainTemplate: React.FC = () => {
   return (
     <div>
       {/* HeaderSection Component */}
-      <HeaderSection />
+      <Header />
 
       {/* Content Section */}
       <div style={{
@@ -22,7 +22,7 @@ export const MainTemplate: React.FC = () => {
 
         {/* DisplayData Component */}
         <div style={{ flex: 1, marginRight: '480px', paddingTop: '130px' }}>
-          <DisplayData />
+          <CashAccelerationGridContainer />
         </div>
       </div>
 
@@ -30,7 +30,9 @@ export const MainTemplate: React.FC = () => {
       {/* FormattedSection Component below DisplayData */}
       <div style={{
       }}>
-        <FormattedSection />
+        <CashKickCard amount={''} title={''} buttonText={''} onClick={function (): void {
+          throw new Error('Function not implemented.');
+        } } />
       </div>
     </div>
   );
