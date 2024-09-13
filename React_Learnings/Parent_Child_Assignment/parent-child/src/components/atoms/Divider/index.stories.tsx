@@ -5,7 +5,7 @@ import { Line } from '../Divider';
 
 // Meta configuration for the Line component
 export default {
-  title: 'Atoms/Line', // Storybook category and component name
+  title: 'Atoms/Divider', // Storybook category and component name
   component: Line,
   argTypes: {
     opacity: {

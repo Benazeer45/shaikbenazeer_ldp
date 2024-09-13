@@ -1,30 +1,29 @@
+// src/components/atoms/Slider.tsx
+import React from 'react';
 import { Slider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-export interface StyledMoleculeProps {
+export interface SliderProps {
   value: number; // Value passed from parent
   onChange: (event: Event, value: number | number[]) => void; // Change handler passed from parent
-  color?: string;
-  width?: string;
+  max: number; // Maximum value for the slider
 }
 
-const CustomSlider = styled(Slider, {
-  shouldForwardProp: (prop) => prop !== 'color',
-})<{ color: string }>(({ theme, color }) => ({
+const CustomSlider = styled(Slider)(({ theme }) => ({
   height: 8,
   '& .MuiSlider-thumb': {
     width: 23,
     height: 23,
     borderRadius: '8px',
     border: '3px solid #B4A9FF',
-    backgroundColor: color,
+    backgroundColor: '#6C5DD3', // Hardcoded color
     '&:hover, &:focus': {
       boxShadow: 'none',
     },
   },
   '& .MuiSlider-track': {
     border: 'none',
-    backgroundColor: '#6C5DD3',
+    backgroundColor: '#6C5DD3', // Hardcoded color
   },
   '& .MuiSlider-rail': {
     opacity: 0.3,
@@ -32,16 +31,15 @@ const CustomSlider = styled(Slider, {
   },
 }));
 
-export const CustomizedSlider = ({ value, onChange, color = '#6C5DD3', width = '100%' }: StyledMoleculeProps) => (
-  <div style={{ width }}>
+export const CustomizedSlider: React.FC<SliderProps> = ({ value, onChange, max }) => (
+  <div style={{ width: '100%' }}> {/* Hardcoded width */}
     <CustomSlider
       value={value} // Use the value prop here
       onChange={onChange} // Handle the change event
       min={0}
-      max={880000}
+      max={max} // Pass max value from props
       step={1}
       aria-labelledby="continuous-slider"
-      color="primary" // Use color from props
     />
   </div>
 );

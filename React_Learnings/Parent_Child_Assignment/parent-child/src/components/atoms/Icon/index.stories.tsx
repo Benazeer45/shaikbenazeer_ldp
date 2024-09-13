@@ -40,7 +40,6 @@ Default.args = {
   src: '/assets/icons/icon.svg', // Default path to the local SVG
   width: '40px', // Default width
   height: '40px', // Default height
-  alt: 'Icon', // Default alt text
 };
 
 // Custom Icon story to test different sizes or other properties
@@ -49,5 +48,4 @@ Custom.args = {
   src: '/assets/icons/icon.svg', // Path to the local SVG (can be changed as needed)
   width: '60px', // Custom width
   height: '60px', // Custom height
-  alt: 'Custom Icon', // Custom alt text
 };

@@ -17,7 +17,7 @@ const StyledButton = styled(MuiButton)(({ theme }) => ({
   opacity: 0.56,
   border: 'none',
   '&:disabled': {
-    Color: theme.palette.primary.main, // Use theme primary color for disabled
+    color: theme.palette.primary.main, // Use theme primary color for disabled
     opacity: theme.palette.action.disabledOpacity, // Use theme disabled opacity
     cursor: 'not-allowed',
   },
@@ -27,9 +27,9 @@ interface CustomButtonProps extends ButtonProps {
   children: React.ReactNode;
 }
 
-export const Button: React.FC<CustomButtonProps> = ({ onClick, disabled, children, ...props }) => {
+export const Button: React.FC<CustomButtonProps> = ({ onClick, children, ...props }) => {
   return (
-    <StyledButton onClick={onClick} disabled={disabled} {...props}>
+    <StyledButton onClick={onClick} {...props}>
       {children}
     </StyledButton>
   );

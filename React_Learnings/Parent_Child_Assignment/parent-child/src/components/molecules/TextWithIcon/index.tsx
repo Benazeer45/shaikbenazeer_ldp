@@ -8,6 +8,7 @@ interface TextWithIconProps {
   text: string;
   iconSrc: string; // Prop to use icon source
   color?: string; // Add color prop
+  onClick: () => void; // Add onClick prop
 }
 
 // Styled Box component
@@ -27,11 +28,11 @@ const StyledText = styled(Typography)<{ color?: string }>(({ theme, color }) => 
   lineHeight: theme.typography.h6.lineHeight, // Use theme typography for line height
 }));
 
-export const TextWithIcon: React.FC<TextWithIconProps> = ({ text, iconSrc, color }) => {
+export const TextWithIcon: React.FC<TextWithIconProps> = ({ text, iconSrc, color, onClick }) => {
   return (
     <StyledBox>
       <StyledText color={color}>{text}</StyledText>
-      <Icon src={iconSrc} width="20px" height="20px" />
+      <Icon src={iconSrc} width="20px" height="20px" onClick={onClick} /> {/* Pass onClick here */}
     </StyledBox>
   );
 };
