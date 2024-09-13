@@ -22,7 +22,7 @@ const TextItem: React.FC<{ imageSrc: string; text: string; isSeeder?: boolean }>
   </div>
 );
 
-const NavLinkItem: React.FC<{ imageSrc: string; text: string }> = ({ imageSrc, text }) => (
+const NavLinkItem: React.FC<{ imageSrc: string; text: string; onClick: () => void }> = ({ imageSrc, text, onClick }) => (
   <NavLink
     text={text}
     active={true}
@@ -43,18 +43,16 @@ const NavLinkItem: React.FC<{ imageSrc: string; text: string }> = ({ imageSrc, t
       alignItems: 'center',
       fontFamily: 'Gilroy-Bold',
     }}
-    onClick={() => {
-      console.log(`${text} clicked`);
-    }}
+    onClick={onClick}
   />
 );
 
-export const SeederInput: React.FC = () => {
-  // Define nav items in an array
+export const SideNavBar: React.FC = () => {
+  // Define nav items in an array with unique ids and onClick handlers
   const navItems = [
-    { imageSrc: ICONS.HOME, text: TEXT.HOME, isNavLink: false },
-    { imageSrc: ICONS.CASH_ACCELERATION, text: TEXT.CASH_ACCELERATION, isNavLink: true },
-    { imageSrc: ICONS.WATCH_HOW_TO, text: TEXT.WATCH_HOW_TO, isNavLink: false }
+    { id: '1', imageSrc: ICONS.HOME, text: TEXT.HOME, isNavLink: false },
+    { id: '2', imageSrc: ICONS.CASH_ACCELERATION, text: TEXT.CASH_ACCELERATION, isNavLink: true, onClick: () => console.log(`${TEXT.CASH_ACCELERATION} clicked`) },
+    { id: '3', imageSrc: ICONS.WATCH_HOW_TO, text: TEXT.WATCH_HOW_TO, isNavLink: false }
   ];
 
   return (
@@ -79,11 +77,20 @@ export const SeederInput: React.FC = () => {
 
         {/* Dynamically render the other items */}
         <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             item.isNavLink ? (
-              <NavLinkItem key={index} imageSrc={item.imageSrc} text={item.text} />
+              <NavLinkItem
+                key={item.id} // Using unique id as key
+                imageSrc={item.imageSrc}
+                text={item.text}
+                onClick={item.onClick || (() => {})} // Provide default no-op function if onClick is not defined
+              />
             ) : (
-              <TextItem key={index} imageSrc={item.imageSrc} text={item.text} />
+              <TextItem
+                key={item.id} // Using unique id as key
+                imageSrc={item.imageSrc}
+                text={item.text}
+              />
             )
           ))}
         </div>

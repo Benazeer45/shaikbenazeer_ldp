@@ -1,5 +1,5 @@
 import React from 'react';
-import { SeederInput } from '../../organisms/SideNavBar';
+import { SideNavBar } from '../../organisms/SideNavBar';
 import CashAccelerationGridContainer from '../../organisms/CardInfo';
 import CashKickCard from '../../organisms/CashKickCard';
 import Header from '../../organisms/Header';
@@ -17,7 +17,7 @@ export const MainTemplate: React.FC = () => {
       }}>
         {/* SeederInput Component */}
         <div style={{ flex: 1 }}>
-          <SeederInput />
+          <SideNavBar />
         </div>
 
         {/* DisplayData Component */}
