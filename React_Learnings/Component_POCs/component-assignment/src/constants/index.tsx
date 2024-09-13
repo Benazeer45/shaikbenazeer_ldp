@@ -69,3 +69,5 @@ export const ICONS = {
     PLACE_TO_CREATE_CASH_KICKS: 'Place to create cash kicks', // Add this line
   };
   
+  export const AVAILABLE_AMOUNT_TEXT = (availableAmount: string) =>
+    `You have upto ${availableAmount} available for a new cash advance`;

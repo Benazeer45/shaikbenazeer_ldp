@@ -1,4 +1,3 @@
-// src/components/SeederInput.tsx
 import React from 'react';
 import { NavLink } from '../../molecules/NavLink';
 import { ICONS, TEXT } from '../../../constants';
@@ -23,7 +22,6 @@ const TextItem: React.FC<{ imageSrc: string; text: string; isSeeder?: boolean }>
   </div>
 );
 
-// Define a component for the NavLink item
 const NavLinkItem: React.FC<{ imageSrc: string; text: string }> = ({ imageSrc, text }) => (
   <NavLink
     text={text}
@@ -45,10 +43,20 @@ const NavLinkItem: React.FC<{ imageSrc: string; text: string }> = ({ imageSrc, t
       alignItems: 'center',
       fontFamily: 'Gilroy-Bold',
     }}
+    onClick={() => {
+      console.log(`${text} clicked`);
+    }}
   />
 );
 
 export const SeederInput: React.FC = () => {
+  // Define nav items in an array
+  const navItems = [
+    { imageSrc: ICONS.HOME, text: TEXT.HOME, isNavLink: false },
+    { imageSrc: ICONS.CASH_ACCELERATION, text: TEXT.CASH_ACCELERATION, isNavLink: true },
+    { imageSrc: ICONS.WATCH_HOW_TO, text: TEXT.WATCH_HOW_TO, isNavLink: false }
+  ];
+
   return (
     <div style={{
       width: '200px',
@@ -66,14 +74,19 @@ export const SeederInput: React.FC = () => {
       justifyContent: 'space-between'
     }}>
       <div>
+        {/* Seeder TextItem */}
         <TextItem imageSrc={ICONS.SEEDER} text={TEXT.SEEDER} isSeeder={true} />
+
+        {/* Dynamically render the other items */}
         <div style={{ marginTop: '40px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <TextItem imageSrc={ICONS.HOME} text={TEXT.HOME} />
-          <NavLinkItem imageSrc={ICONS.CASH_ACCELERATION} text={TEXT.CASH_ACCELERATION} />
+          {navItems.map((item, index) => (
+            item.isNavLink ? (
+              <NavLinkItem key={index} imageSrc={item.imageSrc} text={item.text} />
+            ) : (
+              <TextItem key={index} imageSrc={item.imageSrc} text={item.text} />
+            )
+          ))}
         </div>
-      </div>
-      <div>
-        <TextItem imageSrc={ICONS.WATCH_HOW_TO} text={TEXT.WATCH_HOW_TO} />
       </div>
     </div>
   );

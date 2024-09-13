@@ -5,7 +5,7 @@ interface NavLinkProps {
     active: boolean;
     icon: React.ReactNode;
     style?: React.CSSProperties;
-    onClick?: () => void; // Add onClick prop
+    onClick: () => void; // Add onClick prop
 }
 
 export const NavLink: React.FC<NavLinkProps> = ({ text, active, icon, style, onClick }) => {

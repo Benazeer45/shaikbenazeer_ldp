@@ -2,16 +2,30 @@
 import React from 'react';
 import Heading from '../../atoms/Typography';
 import Button from '../../atoms/Button';
-import { CARD_STYLES, HEADING_STYLES, SUBTEXT_STYLES, BUTTON_STYLES } from '../../../constants';
+import {
+  CARD_STYLES,
+  HEADING_STYLES,
+  SUBTEXT_STYLES,
+  BUTTON_STYLES,
+  AVAILABLE_AMOUNT_TEXT, // Import the new constant
+} from '../../../constants'; // Adjusted path for constants
+import { TEXT } from '../../../constants'; // Import TEXT constants
 
 interface CashKickCardProps {
   amount: string;
   title: string;
   buttonText: string;
+  availableAmount: string; // New prop for available amount
   onClick: () => void; // onClick handler prop
 }
 
-const CashKickCard: React.FC<CashKickCardProps> = ({ amount, title, buttonText, onClick }) => (
+const CashKickCard: React.FC<CashKickCardProps> = ({
+  amount,
+  title,
+  buttonText,
+  availableAmount, // Using the availableAmount prop
+  onClick,
+}) => (
   <div style={CARD_STYLES}>
     <Heading
       size="24px"
@@ -21,8 +35,8 @@ const CashKickCard: React.FC<CashKickCardProps> = ({ amount, title, buttonText, 
       style={HEADING_STYLES}
     >
       <div style={{ lineHeight: '29.4px' }}>
-        Launch a new <br />
-        Cash Kick<br/>
+        {TEXT.PLACE_TO_CREATE_CASH_KICKS} {/* Using constant from TEXT */}
+        <br />
         <span style={{ fontWeight: 600 }}>
           {title} {/* Title passed as a prop */}
         </span>
@@ -37,12 +51,13 @@ const CashKickCard: React.FC<CashKickCardProps> = ({ amount, title, buttonText, 
         lineHeight="22.4px"
         style={{ fontFamily: 'Gilroy, sans-serif' }}
       >
-        You have upto <span style={{ fontWeight: 700 }}>$880,000.00</span> available for a new cash advance
+        {/* Using the AVAILABLE_AMOUNT_TEXT constant with dynamic availableAmount */}
+        {AVAILABLE_AMOUNT_TEXT(availableAmount)}
       </Heading>
     </div>
     <br />
     <Button
-      text='Launch New Kick'
+      text={buttonText} // Button text passed as a prop
       onClick={onClick} // Button click event handled by prop
       style={BUTTON_STYLES}
     />

@@ -32,7 +32,7 @@ export const MainTemplate: React.FC = () => {
       }}>
         <CashKickCard amount={''} title={''} buttonText={''} onClick={function (): void {
           throw new Error('Function not implemented.');
-        } } />
+        } } availableAmount={''} />
       </div>
     </div>
   );
