@@ -1,5 +1,3 @@
-// src/components/MainSection/MainSection.tsx
-
 import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { IconsWithText } from '../../molecules/IconsWithText';
@@ -40,66 +38,81 @@ const IconsWithTextContainer = styled('div')(({ theme }) => ({
 
 interface MainSectionProps {
   data: {
-    mainText: string;
-    subText1: string;
-    subText2: string;
+    heading: string;
+    subheading: string;
+    address: string;
     icons: string[];
     timeText: string;
     timeTextColor: string;
     timeTextFontWeight: number;
   };
+  logoSrc: string;
 }
 
-const MainSection: React.FC<MainSectionProps> = ({ data }) => {
+const MainSection: React.FC<MainSectionProps> = ({
+  data,
+  logoSrc,
+}) => {
   const theme = useTheme();
-
   return (
     <MainSectionContainer>
       <ContentContainer>
         <LogoContainer>
-          <Icon src="/assets/icons/logo.svg" width={theme.spacing(6.875)} height={theme.spacing(6.875)} alt="Logo" />
+          <Icon
+            src={logoSrc}
+            width={theme.spacing(6.875)}
+            height={theme.spacing(6.875)}
+            alt="Logo"
+            onClick={() => {}} // Default no-op click handler
+          />
         </LogoContainer>
         <HeaderSection
           mainText={
             <TypographyText
-              fontSize={theme.typography.pxToRem(20)}
-              fontWeight={500}
-              lineHeight={theme.typography.pxToRem(30)}
-              textAlign="left"
-              color={theme.palette.text.primary}
-              width={theme.spacing(33)}
-              height={theme.typography.pxToRem(30)}
-              opacity="1"
+              sx={{
+                fontSize: theme.typography.pxToRem(20),
+                fontWeight: 500,
+                lineHeight: theme.typography.pxToRem(30),
+                textAlign: 'left',
+                color: theme.palette.text.primary,
+                width: theme.spacing(33),
+                height: theme.typography.pxToRem(30),
+                opacity: 1,
+              }}
             >
-              {data.mainText}
+              {data.heading}
             </TypographyText>
           }
           subText1={
             <TypographyText
-              fontSize={theme.typography.pxToRem(12)}
-              fontWeight={500}
-              lineHeight={theme.typography.pxToRem(16)}
-              textAlign="left"
-              color="#FF725E"
-              width={theme.spacing(5.5)}
-              height={theme.typography.pxToRem(16)}
-              opacity="1"
+              sx={{
+                fontSize: theme.typography.pxToRem(12),
+                fontWeight: 500,
+                lineHeight: theme.typography.pxToRem(16),
+                textAlign: 'left',
+                color: '#FF725E',
+                width: theme.spacing(5.5),
+                height: theme.typography.pxToRem(16),
+                opacity: 1,
+              }}
             >
-              {data.subText1}
+              {data.subheading}
             </TypographyText>
           }
           subText2={
             <TypographyText
-              fontSize={theme.typography.pxToRem(11)}
-              fontWeight={500}
-              lineHeight={theme.typography.pxToRem(16)}
-              textAlign="left"
-              color={theme.palette.text.secondary}
-              width={theme.spacing(24.25)}
-              height={theme.typography.pxToRem(16)}
-              opacity="1"
+              sx={{
+                fontSize: theme.typography.pxToRem(11),
+                fontWeight: 500,
+                lineHeight: theme.typography.pxToRem(16),
+                textAlign: 'left',
+                color: theme.palette.text.secondary,
+                width: theme.spacing(24.25),
+                height: theme.typography.pxToRem(16),
+                opacity: 1,
+              }}
             >
-              {data.subText2}
+              {data.address}
             </TypographyText>
           }
         />
@@ -107,7 +120,7 @@ const MainSection: React.FC<MainSectionProps> = ({ data }) => {
       <IconsWithTextContainer>
         <IconsWithText
           icons={data.icons}
-          text={data.timeText}
+          text={data.timeText} 
           textColor={data.timeTextColor}
           fontWeight={data.timeTextFontWeight}
         />

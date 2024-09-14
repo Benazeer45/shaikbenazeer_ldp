@@ -18,9 +18,9 @@ const IconContainer = styled('div')(({ theme }) => ({
 
 interface IconWithTextProps {
   icons: string[];
-  text: string;
-  textColor?: string; // Add an optional color prop
-  fontWeight?: number; // Add an optional fontWeight prop
+  text: string; // This is already a prop
+  textColor?: string;
+  fontWeight?: number;
 }
 
 export const IconsWithText: React.FC<IconWithTextProps> = ({ icons, text, textColor, fontWeight }) => {
@@ -30,11 +30,24 @@ export const IconsWithText: React.FC<IconWithTextProps> = ({ icons, text, textCo
     <Container>
       <IconContainer>
         {icons.map((icon, index) => (
-          <Icon key={index} src={icon} alt={`Icon ${index}`} width={theme.spacing(3)} height={theme.spacing(3)} />
+          <Icon
+            key={index}
+            src={icon}
+            alt={`Icon ${index}`}
+            width={theme.spacing(3)}
+            height={theme.spacing(3)}
+            onClick={() => {}} // Provide a no-op function
+          />
         ))}
       </IconContainer>
-      <TypographyText color={textColor || theme.palette.text.primary} fontSize={theme.typography.pxToRem(14)} fontWeight={fontWeight || 400}>
-        {text}
+      <TypographyText
+        sx={{
+          fontSize: theme.typography.pxToRem(14),
+          fontWeight: fontWeight || 400,
+          color: textColor || theme.palette.text.primary,
+        }}
+      >
+        {text} {/* This uses the text prop */}
       </TypographyText>
     </Container>
   );
