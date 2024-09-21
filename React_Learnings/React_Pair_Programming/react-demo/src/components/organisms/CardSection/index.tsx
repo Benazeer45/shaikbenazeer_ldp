@@ -1,11 +1,13 @@
+// src/components/organisms/MainSection.tsx
 import React from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import { IconsWithText } from '../../molecules/IconsWithText';
 import { HeaderSection } from '../../molecules/HeaderSection';
 import { Icon } from '../../atoms/Icon';
 import { TypographyText } from '../../atoms/Typography';
+import { jobData } from '../../../utils';
 
-const MainSectionContainer = styled('div')(({ theme }) => ({
+const SingleCardContainer = styled('div')(({ theme }) => ({
   width: theme.spacing(66.5),
   padding: theme.spacing(2),
   borderRadius: theme.shape.borderRadius,
@@ -36,96 +38,99 @@ const IconsWithTextContainer = styled('div')(({ theme }) => ({
   alignItems: 'center',
 }));
 
-interface MainSectionProps {
-  data: {
-    heading: string;
-    subheading: string;
-    address: string;
-    icons: string[];
-    timeText: string;
-    timeTextColor: string;
-    timeTextFontWeight: number;
-  };
-  logoSrc: string;
+const timeTextStyles = {
+  color: '#656E66', // Common color for all timeText
+  fontWeight: 700,  // Common fontWeight for all timeText
+};
+
+interface JobData {
+  heading: string;
+  subheading: string;
+  address: string;
+  icons: string[];
+  timeText: string;
 }
 
-const MainSection: React.FC<MainSectionProps> = ({
-  data,
-  logoSrc,
-}) => {
+const MainSection: React.FC = () => {
   const theme = useTheme();
+  const logoSrc = '/assets/icons/Logo.svg'; // Logo source defined here
+  
   return (
-    <MainSectionContainer>
-      <ContentContainer>
-        <LogoContainer>
-          <Icon
-            src={logoSrc}
-            width={theme.spacing(6.875)}
-            height={theme.spacing(6.875)}
-            alt="Logo"
-            onClick={() => {}} // Default no-op click handler
-          />
-        </LogoContainer>
-        <HeaderSection
-          mainText={
-            <TypographyText
-              sx={{
-                fontSize: theme.typography.pxToRem(20),
-                fontWeight: 500,
-                lineHeight: theme.typography.pxToRem(30),
-                textAlign: 'left',
-                color: theme.palette.text.primary,
-                width: theme.spacing(33),
-                height: theme.typography.pxToRem(30),
-                opacity: 1,
-              }}
-            >
-              {data.heading}
-            </TypographyText>
-          }
-          subText1={
-            <TypographyText
-              sx={{
-                fontSize: theme.typography.pxToRem(12),
-                fontWeight: 500,
-                lineHeight: theme.typography.pxToRem(16),
-                textAlign: 'left',
-                color: '#FF725E',
-                width: theme.spacing(5.5),
-                height: theme.typography.pxToRem(16),
-                opacity: 1,
-              }}
-            >
-              {data.subheading}
-            </TypographyText>
-          }
-          subText2={
-            <TypographyText
-              sx={{
-                fontSize: theme.typography.pxToRem(11),
-                fontWeight: 500,
-                lineHeight: theme.typography.pxToRem(16),
-                textAlign: 'left',
-                color: theme.palette.text.secondary,
-                width: theme.spacing(24.25),
-                height: theme.typography.pxToRem(16),
-                opacity: 1,
-              }}
-            >
-              {data.address}
-            </TypographyText>
-          }
-        />
-      </ContentContainer>
-      <IconsWithTextContainer>
-        <IconsWithText
-          icons={data.icons}
-          text={data.timeText} 
-          textColor={data.timeTextColor}
-          fontWeight={data.timeTextFontWeight}
-        />
-      </IconsWithTextContainer>
-    </MainSectionContainer>
+    <>
+      {jobData.map((data: JobData, index: number) => (
+        <SingleCardContainer key={`job-${index}`}>
+          <ContentContainer>
+            <LogoContainer>
+              <Icon
+                src={logoSrc}
+                width={theme.spacing(6.875)}
+                height={theme.spacing(6.875)}
+                alt="Logo" onClick={function (): void {
+                  throw new Error('Function not implemented.');
+                } }              />
+            </LogoContainer>
+            <HeaderSection
+              mainText={
+                <TypographyText
+                  sx={{
+                    fontSize: theme.typography.pxToRem(20),
+                    fontWeight: 500,
+                    lineHeight: theme.typography.pxToRem(30),
+                    textAlign: 'left',
+                    color: theme.palette.text.primary,
+                    width: theme.spacing(33),
+                    height: theme.typography.pxToRem(30),
+                    opacity: 1,
+                  }}
+                >
+                  {data.heading}
+                </TypographyText>
+              }
+              subText1={
+                <TypographyText
+                  sx={{
+                    fontSize: theme.typography.pxToRem(12),
+                    fontWeight: 500,
+                    lineHeight: theme.typography.pxToRem(16),
+                    textAlign: 'left',
+                    color: '#FF725E',
+                    width: theme.spacing(5.5),
+                    height: theme.typography.pxToRem(16),
+                    opacity: 1,
+                  }}
+                >
+                  {data.subheading}
+                </TypographyText>
+              }
+              subText2={
+                <TypographyText
+                  sx={{
+                    fontSize: theme.typography.pxToRem(11),
+                    fontWeight: 500,
+                    lineHeight: theme.typography.pxToRem(16),
+                    textAlign: 'left',
+                    color: theme.palette.text.secondary,
+                    width: theme.spacing(24.25),
+                    height: theme.typography.pxToRem(16),
+                    opacity: 1,
+                  }}
+                >
+                  {data.address}
+                </TypographyText>
+              }
+            />
+          </ContentContainer>
+          <IconsWithTextContainer>
+            <IconsWithText
+              icons={data.icons}
+              text={data.timeText}
+              textColor={timeTextStyles.color} // Use common timeTextColor
+              fontWeight={timeTextStyles.fontWeight} // Use common timeTextFontWeight
+            />
+          </IconsWithTextContainer>
+        </SingleCardContainer>
+      ))}
+    </>
   );
 };
 
