@@ -48,10 +48,31 @@ const NavLinkItem: React.FC<{ imageSrc: string; text: string; onClick: () => voi
 );
 
 export const SideNavBar: React.FC = () => {
-  // Define nav items in an array with unique ids and onClick handlers
+  // Define a single click handler function
+  const handleItemClick = (itemName: string) => {
+    switch (itemName) {
+      case TEXT.CASH_ACCELERATION:
+        console.log(`${TEXT.CASH_ACCELERATION} clicked`);
+        // Handle specific action for CASH_ACCELERATION
+        break;
+      case TEXT.HOME:
+        console.log(`${TEXT.HOME} clicked`);
+        // Handle specific action for HOME
+        break;
+      case TEXT.WATCH_HOW_TO:
+        console.log(`${TEXT.WATCH_HOW_TO} clicked`);
+        // Handle specific action for WATCH_HOW_TO
+        break;
+      default:
+        console.log(`Unknown item clicked: ${itemName}`);
+        break;
+    }
+  };
+
+  // Define nav items in an array
   const navItems = [
     { id: '1', imageSrc: ICONS.HOME, text: TEXT.HOME, isNavLink: false },
-    { id: '2', imageSrc: ICONS.CASH_ACCELERATION, text: TEXT.CASH_ACCELERATION, isNavLink: true, onClick: () => console.log(`${TEXT.CASH_ACCELERATION} clicked`) },
+    { id: '2', imageSrc: ICONS.CASH_ACCELERATION, text: TEXT.CASH_ACCELERATION, isNavLink: true },
     { id: '3', imageSrc: ICONS.WATCH_HOW_TO, text: TEXT.WATCH_HOW_TO, isNavLink: false }
   ];
 
@@ -83,7 +104,7 @@ export const SideNavBar: React.FC = () => {
                 key={item.id} // Using unique id as key
                 imageSrc={item.imageSrc}
                 text={item.text}
-                onClick={item.onClick || (() => {})} // Provide default no-op function if onClick is not defined
+                onClick={() => handleItemClick(item.text)} // Pass the item name to the handler
               />
             ) : (
               <TextItem
