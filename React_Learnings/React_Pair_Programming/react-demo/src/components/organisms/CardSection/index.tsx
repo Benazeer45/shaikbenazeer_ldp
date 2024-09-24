@@ -54,7 +54,13 @@ interface JobData {
 const MainSection: React.FC = () => {
   const theme = useTheme();
   const logoSrc = '/assets/icons/Logo.svg'; // Logo source defined here
-  
+  const dotIconSrc = '/assets/icons/Dot.svg'; // Dot icon source defined here
+
+  const handleDotClick = () => {
+    // Handle the dropdown logic here
+    console.log('Dot icon clicked');
+  };
+
   return (
     <>
       {jobData.map((data: JobData, index: number) => (
@@ -65,9 +71,11 @@ const MainSection: React.FC = () => {
                 src={logoSrc}
                 width={theme.spacing(6.875)}
                 height={theme.spacing(6.875)}
-                alt="Logo" onClick={function (): void {
+                alt="Logo"
+                onClick={() => {
                   throw new Error('Function not implemented.');
-                } }              />
+                }}
+              />
             </LogoContainer>
             <HeaderSection
               mainText={
@@ -118,6 +126,8 @@ const MainSection: React.FC = () => {
                   {data.address}
                 </TypographyText>
               }
+              iconSrc={dotIconSrc} // Pass the Dot.svg icon source
+              onIconClick={handleDotClick} // Pass the click handler
             />
           </ContentContainer>
           <IconsWithTextContainer>
