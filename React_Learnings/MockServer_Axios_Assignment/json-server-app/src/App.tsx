@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'; 
 import PostForm from './components/PostForm';
-import PostList from './components/PostList';
-import { fetchPosts, createPost, updatePost, deletePost } from './service';
+import { fetchPosts, createPost, updatePost, deletePost } from './service/apiService';
+import { PostList } from './components/PostList';
 
 interface Post {
   id: string; 

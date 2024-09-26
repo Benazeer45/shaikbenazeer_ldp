@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { Box, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, TextField, Typography, Paper, TablePagination } from '@mui/material';
 
 interface Post {
   id: string;
@@ -13,167 +13,84 @@ interface PostListProps {
   onDelete: (id: string) => void;
 }
 
-const PostList: React.FC<PostListProps> = ({ posts, onEdit, onDelete }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+export const PostList: React.FC<PostListProps> = ({ posts = [], onEdit, onDelete }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const postsPerPage = 5;
+  const [page, setPage] = useState(0); // Page index starts at 0 for TablePagination
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const filteredPosts = posts.filter(post =>
+  const filteredPosts = posts?.filter(post =>
     post.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) || [];
 
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
+  const handleChangePage = (_event: unknown, newPage: number) => {
+    setPage(newPage);
   };
 
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0); // Reset page when rows per page changes
   };
 
   return (
-    <Container>
-      <SearchInput
-        type="text"
-        placeholder="Search by title..."
+    <Box padding={3}>
+      <TextField
+        fullWidth
+        label="Search by title..."
         value={searchQuery}
         onChange={(e) => {
           setSearchQuery(e.target.value);
-          setCurrentPage(1); 
+          setPage(0); // Reset page when searching
         }}
+        variant="outlined"
+        margin="normal"
       />
 
-      <Table>
-        <thead>
-          <TableRow>
-            <TableHeader>Title</TableHeader>
-            <TableHeader>Views</TableHeader>
-            <TableHeader>Actions</TableHeader>
-          </TableRow>
-        </thead>
-        <tbody>
-          {currentPosts.length > 0 ? (
-            currentPosts.map((post) => (
-              <TableRow key={post.id}>
-                <TableCell>{post.title}</TableCell>
-                <TableCell>{post.views}</TableCell>
-                <TableCell>
-                  <ActionButton onClick={() => onEdit(post)}>Edit</ActionButton>
-                  <ActionButton onClick={() => onDelete(post.id)}>Delete</ActionButton>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Views</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {filteredPosts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).length > 0 ? (
+              filteredPosts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((post) => (
+                <TableRow key={post.id}>
+                  <TableCell>{post.title}</TableCell>
+                  <TableCell>{post.views}</TableCell>
+                  <TableCell>
+                    <Stack direction="row" spacing={2}>
+                      <Button variant="contained" color="primary" onClick={() => onEdit(post)}>
+                        Edit
+                      </Button>
+                      <Button variant="contained" color="secondary" onClick={() => onDelete(post.id)}>
+                        Delete
+                      </Button>
+                    </Stack>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} align="center">
+                  No posts found.
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={3}>No posts found.</TableCell>
-            </TableRow>
-          )}
-        </tbody>
-      </Table>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
 
-      {/* Pagination Controls */}
-      <Pagination>
-        <PageButton onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Previous
-        </PageButton>
-        <PageInfo>
-          Page {currentPage} of {totalPages}
-        </PageInfo>
-        <PageButton onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </PageButton>
-      </Pagination>
-    </Container>
+      <TablePagination
+        component="div"
+        count={filteredPosts.length}
+        page={page}
+        onPageChange={handleChangePage}
+        rowsPerPage={rowsPerPage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Box>
   );
 };
-
-const Container = styled.div`
-  padding: 20px;
-`;
-
-const SearchInput = styled.input`
-  padding: 10px;
-  margin-bottom: 20px;
-  width: 70%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-`;
-
-const TableRow = styled.tr`
-  border-bottom: 1px solid #ddd;
-`;
-
-const TableHeader = styled.th`
-  padding: 12px;
-  text-align: left;
-  background-color: #f4f4f4;
-`;
-
-const TableCell = styled.td`
-  padding: 12px;
-`;
-
-const ActionButton = styled.button`
-  margin-right: 10px;
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:disabled {
-    background-color: #c0c0c0;
-    cursor: not-allowed;
-  }
-`;
-
-const Pagination = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 10px;
-`;
-
-const PageButton = styled.button`
-  padding: 8px 12px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  &:disabled {
-    background-color: #c0c0c0;
-    cursor: not-allowed;
-  }
-`;
-
-const PageInfo = styled.span`
-  margin: 0 10px;
-`;
-
-export default PostList;
