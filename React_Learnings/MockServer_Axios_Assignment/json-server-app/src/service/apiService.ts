@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { HTTP_STATUS } from '../constants/constants';
-import axiosInstance from './axiosInstance';
+import axiosInstance from '.';
 
 // Fetch all posts with error handling
 export const fetchPosts = async () => {
