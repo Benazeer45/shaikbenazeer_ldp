@@ -5,7 +5,7 @@ import { CryptoInfoDisplay } from '../../molecules/TabsSection';
 import { BalanceSection } from '../../molecules/BalanceSection';
 import { SideBar } from '../../atoms/SideBar';
 import { balanceData, cryptoData, portfolioData } from '../../../utils/Constants';
-import { Box } from '@mui/material'; // Import Box and Typography from MUI
+import { Box } from '@mui/material';
 
 const MainSectionContainer = styled(Box)`
   display: flex;
@@ -35,10 +35,13 @@ const SidebarContainer = styled(Box)`
   display: flex;
 `;
 
+const CryptoContainer = styled(Box)`
+  width: 380px;
+`;
+
 export const MainSection: React.FC = () => {
   return (
     <MainSectionContainer>
-      {/* Portfolio Section */}
       <PortfolioSection
         title={portfolioData.title}
         iconSrc={portfolioData.iconSrc} 
@@ -47,7 +50,7 @@ export const MainSection: React.FC = () => {
       <SidebarContainer>
         <CryptoTabsContainer>
           {cryptoData.map((crypto, index) => (
-            <div key={index} style={{ width: '380px' }}>
+            <CryptoContainer key={index}>
               {crypto.cryptoName === 'Ethereum' ? (
                 <EthereumContainer>
                   <CryptoInfoDisplay
@@ -68,14 +71,13 @@ export const MainSection: React.FC = () => {
                   priceChangeColor={crypto.priceChangeColor}
                 />
               )}
-            </div>
+            </CryptoContainer>
           ))}
         </CryptoTabsContainer>
 
         <SideBar />
       </SidebarContainer>
 
-      {/* Balance Section */}
       <BalanceSection
         title={balanceData.title}
         value={balanceData.value} 

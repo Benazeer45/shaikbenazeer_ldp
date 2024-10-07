@@ -18,7 +18,7 @@ const Container = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px;
+  padding: 0;
   background-color: #fff;     
   margin: 0 auto;
 `;
@@ -35,6 +35,10 @@ const RightLayout = styled(Box)`
   align-items: flex-end;
 `;
 
+const PriceChangeText = styled(Typography)<{ color: string }>`
+  color: ${({ color }) => color};
+`;
+
 export const CryptoInfoDisplay: React.FC<CryptoInfoDisplayProps> = ({
   iconSrc,
   cryptoName,
@@ -47,9 +51,7 @@ export const CryptoInfoDisplay: React.FC<CryptoInfoDisplayProps> = ({
     <Container>
       <LeftLayout>
         <Icon src={iconSrc} width="42px" height="42px" />
-        
         <div>
-          {/* Using Typography with defined variants */}
           <Typography variant="body1" fontWeight={500} color="text.primary">
             {cryptoName}
           </Typography>
@@ -58,14 +60,13 @@ export const CryptoInfoDisplay: React.FC<CryptoInfoDisplayProps> = ({
           </Typography>
         </div>
       </LeftLayout>
-
       <RightLayout>
         <Typography variant="body1" fontWeight={500} color="text.primary">
           {price}
         </Typography>
-        <Typography variant="body2" fontWeight={400} style={{ color: priceChangeColor }}>
+        <PriceChangeText variant="body2" fontWeight={400} color={priceChangeColor}>
           {priceChange}
-        </Typography>
+        </PriceChangeText>
       </RightLayout>
     </Container>
   );

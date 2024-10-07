@@ -1,14 +1,37 @@
 import React from "react";
-import styled from "styled-components"; // You can keep this for any other styled components.
+import styled from "styled-components";
 import { Icon } from "../../atoms/Icons";
-import { Box, Typography } from "@mui/material"; // Importing Box and Typography from MUI
+import { Box, Typography } from "@mui/material"; 
 
 interface PortfolioSectionProps {
   title: string;
   iconSrc: string;
 }
 
-const SmallIcon = styled(Box)` // Keep SmallIcon styled-component for specific styles
+const PortfolioContainer = styled(Box)`
+  width: 380px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  margin: 0 auto;
+`;
+
+const Title = styled(Typography)`
+  variant: h4;
+  color: ${({ theme }) => theme.palette.text.primary}; 
+  width: 95px;
+`;
+
+const IconContainer = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-left: 90px;
+`;
+
+const SmallIcon = styled(Box)` 
   width: 18px;
   height: 17px;
   display: flex;
@@ -16,28 +39,20 @@ const SmallIcon = styled(Box)` // Keep SmallIcon styled-component for specific s
   justify-content: space-between;
 `;
 
-const Line = styled(Box)` // Keep Line styled-component for specific styles
+const Line = styled(Box)` 
   width: 100%;
   height: 2px;
-  background-color: '#0052FF'; // Ensured color consistency with theme
+  background-color: #0052FF;
 `;
 
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ title, iconSrc }) => {
   return (
-    <Box
-      width="380px"
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      padding="0px"
-      margin="0 auto"
-    >
-      {/* Use different typography variants */}
-      <Typography variant="h4" color="text.primary" width="95px"> {/* Header variant */}
+    <PortfolioContainer>
+      <Title>
         {title}
-      </Typography>
+      </Title>
 
-      <Box display="flex" alignItems="center" justifyContent="center" gap="8px" marginLeft="90px">
+      <IconContainer>
         <Icon src={iconSrc} width="32px" height="32px" />
         <SmallIcon>
           <Line />
@@ -45,7 +60,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ title, iconS
           <Line />
           <Line />
         </SmallIcon>
-      </Box>
-    </Box>
+      </IconContainer>
+    </PortfolioContainer>
   );
 };
