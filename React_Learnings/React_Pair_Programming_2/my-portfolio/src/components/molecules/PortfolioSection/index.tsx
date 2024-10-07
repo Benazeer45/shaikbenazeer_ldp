@@ -1,31 +1,14 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components"; // You can keep this for any other styled components.
 import { Icon } from "../../atoms/Icons";
-import { TypographyText } from "../../atoms/Typography";
+import { Box, Typography } from "@mui/material"; // Importing Box and Typography from MUI
 
 interface PortfolioSectionProps {
   title: string;
   iconSrc: string;
 }
 
-const PortfolioContainer = styled.div`
-  width: 380px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0px 0px;
-  margin: 0 auto;
-`;
-
-const IconContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-left: 90px;
-`;
-
-const SmallIcon = styled.div`
+const SmallIcon = styled(Box)` // Keep SmallIcon styled-component for specific styles
   width: 18px;
   height: 17px;
   display: flex;
@@ -33,37 +16,36 @@ const SmallIcon = styled.div`
   justify-content: space-between;
 `;
 
-const Line = styled.div`
+const Line = styled(Box)` // Keep Line styled-component for specific styles
   width: 100%;
   height: 2px;
-  background-color: #0052FF;
+  background-color: '#0052FF'; // Ensured color consistency with theme
 `;
 
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ title, iconSrc }) => {
   return (
-    <PortfolioContainer>
-      <TypographyText
-        fontSize="16px"
-        fontWeight={500}
-        lineHeight="22px"
-        color="#343446"
-        width="95px"
-      >
+    <Box
+      width="380px"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      padding="0px"
+      margin="0 auto"
+    >
+      {/* Use different typography variants */}
+      <Typography variant="h4" color="text.primary" width="95px"> {/* Header variant */}
         {title}
-      </TypographyText>
-      <IconContainer>
-        <Icon
-          src={iconSrc}
-          width="32px"
-          height="32px"
-        />
+      </Typography>
+
+      <Box display="flex" alignItems="center" justifyContent="center" gap="8px" marginLeft="90px">
+        <Icon src={iconSrc} width="32px" height="32px" />
         <SmallIcon>
           <Line />
           <Line />
           <Line />
           <Line />
         </SmallIcon>
-      </IconContainer>
-    </PortfolioContainer>
+      </Box>
+    </Box>
   );
 };

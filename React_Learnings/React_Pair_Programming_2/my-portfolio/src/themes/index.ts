@@ -13,7 +13,7 @@ const theme = createTheme({
       secondary: '#7D7D89', 
     },
     background: {
-      default: '#f0f0f0',
+      default: '#f0f0f0', 
       paper: '#ffffff',  
     },
   },
@@ -25,13 +25,43 @@ const theme = createTheme({
       fontWeight: 500,
       lineHeight: '2.5rem',
     },
+    h2: {
+      fontSize: '1.5rem',
+      fontWeight: 500,
+      lineHeight: '2rem',
+    },
+    h3: {
+      fontSize: '1.25rem',
+      fontWeight: 500,
+      lineHeight: '1.75rem',
+    },
+    h4: {
+      fontSize: '1.125rem',
+      fontWeight: 500,
+      lineHeight: '1.5rem',
+    },
     body1: {
-      fontSize: '1rem',
+      fontSize: '1rem', 
       fontWeight: 400,
       lineHeight: '1.5rem',
     },
+    body2: {
+      fontSize: '0.875rem', 
+      lineHeight: '1.25rem',
+    },
+    caption: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: '1rem',
+      color: '#7D7D89', 
+    },
+    button: {
+      fontSize: '1rem',
+      fontWeight: 500,
+      textTransform: 'none', 
+    },
   },
-  spacing: 8, 
+  spacing: 8,
 });
 
 export default theme;

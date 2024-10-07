@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Icon } from "../../atoms/Icons";
-import { TypographyText } from "../../atoms/Typography";
+import { Box, Typography } from "@mui/material";
 
 interface CryptoInfoDisplayProps {
   iconSrc: string; 
@@ -9,10 +9,10 @@ interface CryptoInfoDisplayProps {
   cryptoSymbol: string;
   price: string;       
   priceChange: string; 
-  style?: React.CSSProperties;
+  priceChangeColor?: string; 
 }
 
-const Container = styled.div<{ customStyle?: React.CSSProperties }>`
+const Container = styled(Box)`
   width: 380px;  
   height: 30px;
   display: flex;
@@ -21,28 +21,27 @@ const Container = styled.div<{ customStyle?: React.CSSProperties }>`
   padding: 0px;
   background-color: #fff;     
   margin: 0 auto;
-  ${({ customStyle }) => customStyle && { ...customStyle }}
 `;
 
-const LeftLayout = styled.div`
+const LeftLayout = styled(Box)`
   display: flex;
   align-items: center;
   gap: 10px;
 `;
 
-const RightLayout = styled.div`
+const RightLayout = styled(Box)`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
 `;
 
-export const CryptoInfoDisplay: React.FC<CryptoInfoDisplayProps & { priceChangeColor?: string }> = ({
+export const CryptoInfoDisplay: React.FC<CryptoInfoDisplayProps> = ({
   iconSrc,
   cryptoName,
   cryptoSymbol,
   price,
   priceChange,
-  priceChangeColor
+  priceChangeColor = "#20B03F", 
 }) => {
   return (
     <Container>
@@ -50,22 +49,23 @@ export const CryptoInfoDisplay: React.FC<CryptoInfoDisplayProps & { priceChangeC
         <Icon src={iconSrc} width="42px" height="42px" />
         
         <div>
-          <TypographyText fontSize="16px" fontWeight={500} lineHeight="22px" color="#343446">
+          {/* Using Typography with defined variants */}
+          <Typography variant="body1" fontWeight={500} color="text.primary">
             {cryptoName}
-          </TypographyText>
-          <TypographyText fontSize="14px" fontWeight={400} lineHeight="16px" color="#7D7D89">
+          </Typography>
+          <Typography variant="body2" fontWeight={400} color="text.secondary">
             {cryptoSymbol}
-          </TypographyText>
+          </Typography>
         </div>
       </LeftLayout>
 
       <RightLayout>
-        <TypographyText fontSize="16px" fontWeight={500} lineHeight="22px" color="#343446">
+        <Typography variant="body1" fontWeight={500} color="text.primary">
           {price}
-        </TypographyText>
-        <TypographyText fontSize="14px" fontWeight={400} lineHeight="16px" color={priceChangeColor || "#20B03F"}>
+        </Typography>
+        <Typography variant="body2" fontWeight={400} style={{ color: priceChangeColor }}>
           {priceChange}
-        </TypographyText>
+        </Typography>
       </RightLayout>
     </Container>
   );

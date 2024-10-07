@@ -1,63 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 import { Divider } from "../../atoms/Divider";
-import { TypographyText } from "../../atoms/Typography";
+import { Box, Typography } from "@mui/material"; // Importing Box and Typography from MUI
 
 interface BalanceSectionProps {
   title: string;
   value: string;
 }
 
-const BalanceSectionContainer = styled.div`
-  display: flex;
-  flex-direction: column; 
-  align-items: center;
-  width: 100%; 
-`;
-
-const BalanceContent = styled.div`
-  display: flex;
-  align-items: center;
-  width: 380px;
-  padding: 8px 24px; 
-  gap: 200px;
-`;
-
-const DividerWrapper = styled.div`
+const DividerWrapper = styled(Box)` // Use Box instead of styled.div
   margin: 15px 0;
 `;
 
 export const BalanceSection: React.FC<BalanceSectionProps> = ({ title, value }) => {
   return (
-    <BalanceSectionContainer>
+    <Box display="flex" flexDirection="column" alignItems="center" width="100%"> {/* Using Box for the container */}
       <DividerWrapper>
         <Divider />
       </DividerWrapper>
-      
-      <BalanceContent>
-        <TypographyText
-          fontSize="16px"
-          fontWeight={500}
-          lineHeight="22px"
-          color="#7D7D89"
-          width="auto"
-        >
+
+      <Box display="flex" alignItems="center" width="380px" padding="8px 24px" gap="200px"> {/* Using Box for balance content */}
+        <Typography variant="body1" color="text.secondary"> 
           {title}
-        </TypographyText>
-        <TypographyText
-          fontSize="16px"
-          fontWeight={500}
-          lineHeight="22px"
-          color="#343446"
-          width="auto"
-        >
+        </Typography>
+        <Typography variant="body1" color="text.primary">
           {value}
-        </TypographyText>
-      </BalanceContent>
+        </Typography>
+      </Box>
 
       <DividerWrapper>
         <Divider />
       </DividerWrapper>
-    </BalanceSectionContainer>
+    </Box>
   );
 };
