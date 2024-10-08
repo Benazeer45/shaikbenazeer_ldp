@@ -1,4 +1,5 @@
 package Java_Assignments.Assignment1;
+
 import java.io.File;
 
 public class FileSearcher {
@@ -6,11 +7,8 @@ public class FileSearcher {
     public void searchFiles(String directoryPath, String regex) {
         File directory = new File(directoryPath);
 
-        if (!directory.exists()) {
-            System.out.println("Error: The directory path does not exist. Please try again.");
-            return;
-        } else if (!directory.isDirectory()) {
-            System.out.println("Error: The path is not a directory. Please provide a valid directory.");
+        if (!directory.exists() || !directory.isDirectory()) {
+            System.out.println("Error: The directory path is either invalid or not a directory. Please provide a valid directory.");
             return;
         }
 
@@ -27,7 +25,7 @@ public class FileSearcher {
                 }
             }
         } else {
-            if (fileFilter.accept(file)) {
+            if (fileFilter.match(file)) {
                 System.out.println("Match found: " + file.getAbsolutePath());
             }
         }

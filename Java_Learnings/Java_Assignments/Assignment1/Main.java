@@ -16,13 +16,11 @@ public class Main {
 
             if (regex.equalsIgnoreCase("exit")) {
                 System.out.println("Exiting program.");
-                break;
+                scanner.close(); 
+                System.exit(0); 
             }
 
             fileSearcher.searchFiles(homeDirectory, regex);
         }
-
-        scanner.close();
     }
 }
-

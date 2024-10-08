@@ -15,7 +15,7 @@ public class RegexFileFilter {
         }
     }
 
-    public boolean accept(File file) {
+    public boolean match(File file) {
         if (pattern == null) {
             return false;
         }
