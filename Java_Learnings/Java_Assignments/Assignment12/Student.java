@@ -3,14 +3,6 @@ package Java_Assignments.Assignment12;
 import java.util.Objects;
 
 public class Student {
-//    private final int id;
-//    private final String name;
-//    private final int age;
-//    private final String gender;
-//    private final String engDepartment;
-//    private final int yearOfEnrollment;
-//    private final double perTillDate;
-
     public int id;
     public String name;
     public int age;
@@ -53,9 +45,9 @@ public class Student {
         return age;
     }
 
-    public String getDetails() {
+    @Override
+    public String toString() {
         return String.format("ID: %d, Name: %s, Age: %d, Gender: %s, Department: %s, Year: %d, Percentage: %.2f",
                 id, name, age, gender, engDepartment, yearOfEnrollment, perTillDate);
     }
 }
-

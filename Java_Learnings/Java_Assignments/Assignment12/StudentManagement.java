@@ -1,7 +1,6 @@
 package Java_Assignments.Assignment12;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class StudentManagement {
@@ -44,9 +43,8 @@ public class StudentManagement {
         // 3. Get the details of all male students in the Computer Science department
         System.out.println("\nMale students in Computer Science:");
         students.stream()
-                .filter(student -> student.getGender().equals("Male"))
-                .filter(student -> student.getEngDepartment().equals("Computer Science"))
-                .map(Student::getDetails)
+                .filter(student -> student.getGender().equals("Male") && student.getEngDepartment().equals("Computer Science"))
+                .map(Student::toString)  // or use getDetails() if preferred
                 .forEach(System.out::println);
 
         // 4. Count the number of male and female students
@@ -65,7 +63,7 @@ public class StudentManagement {
         System.out.println("\nStudent with highest percentage:");
         students.stream()
                 .max(Comparator.comparingDouble(Student::getPerTillDate))
-                .ifPresent(student -> System.out.println(student.getDetails()));
+                .ifPresent(student -> System.out.println(student.toString()));  // or use getDetails()
 
         // 7. Count the number of students in each department
         System.out.println("\nNumber of students in each department:");
@@ -82,10 +80,9 @@ public class StudentManagement {
         // 9. Youngest male student in the Electronic department
         System.out.println("\nYoungest male student in Electronic department:");
         students.stream()
-                .filter(student -> student.getGender().equals("Male"))
-                .filter(student -> student.getEngDepartment().equals("Electronic"))
+                .filter(student -> student.getGender().equals("Male") && student.getEngDepartment().equals("Electronic"))
                 .min(Comparator.comparingInt(Student::getAge))
-                .ifPresent(student -> System.out.println(student.getDetails()));
+                .ifPresent(student -> System.out.println(student.toString()));  // or use getDetails()
 
         // 10. Count of male and female students in the Computer Science department
         System.out.println("\nCount of male and female students in Computer Science department:");
