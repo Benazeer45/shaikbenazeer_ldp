@@ -15,36 +15,35 @@ public class CustomerDaoImpl implements CustomerDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-
     @Override
     public List<Customer> getCustomers() {
         Session currentSession = sessionFactory.getCurrentSession();
-        Query<Customer> theQuery = currentSession.createQuery("from Customer", Customer.class);
-        return theQuery.getResultList();
+        Query<Customer> customerQuery = currentSession.createQuery("from Customer", Customer.class);
+        return customerQuery.getResultList();  // Return list of customers
     }
 
     @Override
     public void saveCustomer(Customer customer) {
         Session currentSession = sessionFactory.getCurrentSession();
-        currentSession.saveOrUpdate(customer);
+        currentSession.saveOrUpdate(customer);  // Save or update customer
     }
 
     @Override
-    public Customer getCustomer(int theId) {
+    public Customer getCustomer(int customerId) {
         Session currentSession = sessionFactory.getCurrentSession();
-        return currentSession.get(Customer.class, theId);  // Fetch customer by ID
+        return currentSession.get(Customer.class, customerId);  // Fetch customer by ID
     }
 
     @Override
-    public void deleteCustomer(int theId) {
+    public void deleteCustomer(int customerId) {
         Session currentSession = sessionFactory.getCurrentSession();
-        Query<?> theQuery = currentSession.createQuery("delete from Customer where id=:customerId");
-        theQuery.setParameter("customerId", theId);
-        theQuery.executeUpdate();  // Delete customer by ID
+        Query<?> deleteCustomerQuery = currentSession.createQuery("delete from Customer where id=:customerId");
+        deleteCustomerQuery.setParameter("customerId", customerId);
+        deleteCustomerQuery.executeUpdate();  // Delete customer by ID
     }
+
     // Setter for unit testing purposes
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
 }
