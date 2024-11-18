@@ -1,15 +1,17 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "customer")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter  // Lombok annotation for getters
+@Setter  // Lombok annotation for setters
+@NoArgsConstructor  // Lombok annotation for the default constructor
+@AllArgsConstructor  // Lombok annotation for the constructor with all fields
 public class Customer {
 
     @Id
