@@ -1,10 +1,10 @@
 package org.example.Dao;
 
+import org.example.Dao.CustomerDao;
 import org.example.Entity.Customer;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,14 +12,17 @@ import java.util.List;
 @Repository
 public class CustomerDaoImpl implements CustomerDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
+
+    public CustomerDaoImpl(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     @Override
     public List<Customer> getCustomers() {
         Session currentSession = sessionFactory.getCurrentSession();
-        Query<Customer> theQuery = currentSession.createQuery("from Customer", Customer.class);
-        return theQuery.getResultList();
+        Query<Customer> query = currentSession.createQuery("from Customer", Customer.class);
+        return query.getResultList();
     }
 
     @Override
@@ -29,16 +32,16 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer getCustomer(int theId) {
+    public Customer getCustomer(int customerId) {
         Session currentSession = sessionFactory.getCurrentSession();
-        return currentSession.get(Customer.class, theId);  // Fetch customer by ID
+        return currentSession.get(Customer.class, customerId);
     }
 
     @Override
-    public void deleteCustomer(int theId) {
+    public void deleteCustomer(int customerId) {
         Session currentSession = sessionFactory.getCurrentSession();
-        Query<?> theQuery = currentSession.createQuery("delete from Customer where id=:customerId");
-        theQuery.setParameter("customerId", theId);
-        theQuery.executeUpdate();  // Delete customer by ID
+        Query<?> query = currentSession.createQuery("delete from Customer where id = :customerId");
+        query.setParameter("customerId", customerId);
+        query.executeUpdate();
     }
 }

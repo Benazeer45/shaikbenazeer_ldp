@@ -2,7 +2,7 @@ package org.example.Service;
 
 import org.example.Dao.CustomerDao;
 import org.example.Entity.Customer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.Service.CustomerService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,8 +11,11 @@ import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    @Autowired
-    private CustomerDao customerDao;
+    private final CustomerDao customerDao;
+
+    public CustomerServiceImpl(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
 
     @Override
     @Transactional
@@ -28,13 +31,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     @Transactional
-    public Customer getCustomer(int theId) {
-        return customerDao.getCustomer(theId);  // Fetch customer by ID
+    public Customer getCustomer(int customerId) {
+        return customerDao.getCustomer(customerId);
     }
 
     @Override
     @Transactional
-    public void deleteCustomer(int theId) {
-        customerDao.deleteCustomer(theId);  // Delete customer by ID
+    public void deleteCustomer(int customerId) {
+        customerDao.deleteCustomer(customerId);
     }
 }
