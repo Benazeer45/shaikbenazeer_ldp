@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Hello World</title>
+    <!-- Link to the external CSS -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1 th:text="${message}">Default Message</h1>
+<p>Today's date is: <span th:text="${currentDate}">Default Date</span></p>
+</body>
+</html>
