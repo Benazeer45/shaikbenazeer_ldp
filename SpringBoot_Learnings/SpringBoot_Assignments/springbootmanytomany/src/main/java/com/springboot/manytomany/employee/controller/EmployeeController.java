@@ -17,6 +17,7 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final ProjectService projectService;
 
+    @Autowired
     public EmployeeController(EmployeeService employeeService, ProjectService projectService) {
         this.employeeService = employeeService;
         this.projectService = projectService;
@@ -25,9 +26,8 @@ public class EmployeeController {
     // Displays the list of employees
     @GetMapping("/getEmployees")
     public String getEmployees(Model model) {
-        List<Employee> employees = employeeService.getEmployeeDetails();
-        model.addAttribute("employees", employees); // Add employees to model
-        return "employee-list"; // Return Thymeleaf view for employee list
+        model.addAttribute("employees", employeeService.getEmployeeDetails());  // Add employees directly to model
+        return "employee-list";  // Return Thymeleaf view for employee list
     }
 
     // Displays the form to add or update an employee

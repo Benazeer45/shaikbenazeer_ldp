@@ -4,7 +4,6 @@ import com.springboot.manytomany.employee.entity.Employee;
 import com.springboot.manytomany.employee.repository.EmployeeRepository;
 import com.springboot.manytomany.project.entity.Project;
 import com.springboot.manytomany.project.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -18,7 +17,7 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
 
-    @Autowired
+    // Constructor injection instead of @Autowired on fields
     public EmployeeService(EmployeeRepository employeeRepository, ProjectRepository projectRepository) {
         this.employeeRepository = employeeRepository;
         this.projectRepository = projectRepository;

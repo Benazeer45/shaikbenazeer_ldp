@@ -32,8 +32,7 @@ public class ProjectController {
     // Displays the form to add or update a project
     @GetMapping("/save")
     public String addOrUpdateProjectForm(@RequestParam(required = false) Long projectId, Model model) {
-        Project project = projectService.getProjectById(projectId).orElse(new Project());  // Use orElse for optional handling
-        model.addAttribute("project", project);
+        model.addAttribute("project", projectService.getProjectById(projectId).orElse(new Project()));  // Directly use it in addAttribute
         model.addAttribute("employees", employeeService.getEmployeeDetails(null));  // Add list of employees to model
         return "project-form";  // Return Thymeleaf view for adding or updating a project
     }
