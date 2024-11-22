@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center">Employee List</h2>
+    <div class="mb-3">
+        <a href="/employee/save" class="btn btn-primary">Add New Employee</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Employee Name</th>
+            <th>Projects</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.empName}"></td>
+            <td>
+                <ul>
+                    <li th:each="project : ${employee.assignedProjects}" th:text="${project.projectName}"></li>
+                </ul>
+            </td>
+            <td>
+                <!-- Edit Button -->
+                <a th:href="@{/employee/edit/{empId}(empId=${employee.empId})}" class="btn btn-warning btn-sm">Edit</a>
+
+                <!-- Delete Button -->
+                <a th:href="@{/employee/delete/{empId}(empId=${employee.empId})}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
