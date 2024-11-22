@@ -9,58 +9,62 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+    private final ProjectRepository projectRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
+    public EmployeeService(EmployeeRepository employeeRepository, ProjectRepository projectRepository) {
+        this.employeeRepository = employeeRepository;
+        this.projectRepository = projectRepository;
+    }
 
     public String saveOrUpdateEmployee(Employee emp, List<Long> projectId) {
-        // Convert List to Set of Projects
         Set<Project> projects = new HashSet<>(projectRepository.findAllById(projectId));
 
-        // Check if an employee with the same name and same project assignments already exists
         List<Employee> existingEmployees = employeeRepository.findByEmpNameAndAssignedProjects(emp.getEmpName(), projects);
         if (!existingEmployees.isEmpty()) {
-            return "Employee with the same name and assigned projects already exists."; // Return error message
+            return "Employee with the same name and assigned projects already exists.";
         }
 
-        // If no duplicate exists, save or update the employee
         emp.setAssignedProjects(projects);
-        employeeRepository.save(emp);  // Save employee, if ID is present, it will update
-        return null;  // No error, successful save or update
+        employeeRepository.save(emp);
+        return null;
     }
 
-    // Get all employee details or by employee ID
+    public List<Employee> getEmployeeDetails() {
+        return employeeRepository.findAll();
+    }
+
     public List<Employee> getEmployeeDetails(Long empId) {
-        if (empId != null) {
-            return employeeRepository.findAllByEmpId(empId);
-        } else {
-            return employeeRepository.findAll();
-        }
+        return Optional.ofNullable(empId)
+                .map(id -> employeeRepository.findAllByEmpId(id))
+                .orElseGet(this::getEmployeeDetails);
     }
 
-    // Delete employee
     public void deleteEmployee(Long empId) {
+        if (!employeeRepository.existsById(empId)) {
+            throw new IllegalArgumentException("Employee with ID " + empId + " not found.");
+        }
         employeeRepository.deleteById(empId);
     }
 
-    // Get employee details by ID
     public Employee getEmployeeById(Long empId) {
-        return employeeRepository.findById(empId).orElse(null);
+        return employeeRepository.findById(empId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee with ID " + empId + " not found."));
     }
 
-    // Assign project to employee
     public Employee assignProjectToEmployee(Long empId, Long projectId) {
-        Employee employee = employeeRepository.findById(empId).get();
-        Project project = projectRepository.findById(projectId).get();
+        Employee employee = employeeRepository.findById(empId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee with ID " + empId + " not found."));
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Project with ID " + projectId + " not found."));
         employee.getAssignedProjects().add(project);
         return employeeRepository.save(employee);
     }
-
 }

@@ -4,21 +4,23 @@ import com.springboot.manytomany.employee.entity.Employee;
 import com.springboot.manytomany.employee.service.EmployeeService;
 import com.springboot.manytomany.project.entity.Project;
 import com.springboot.manytomany.project.repository.ProjectRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
 public class ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
+    private final ProjectRepository projectRepository;
+    private final EmployeeService employeeService;
 
-    @Autowired
-    private EmployeeService employeeService;
+    public ProjectService(ProjectRepository projectRepository, EmployeeService employeeService) {
+        this.projectRepository = projectRepository;
+        this.employeeService = employeeService;
+    }
 
     public void saveProject(Project projectObj, List<Long> employeeIds) {
         // Fetch and associate employees
@@ -53,6 +55,7 @@ public class ProjectService {
         }
         return false;
     }
+
     public List<Project> getProjectDetails(Long projectId) {
         if (projectId != null) {
             return projectRepository.findAllByProjectId(projectId);
@@ -61,8 +64,8 @@ public class ProjectService {
         }
     }
 
-    public Project getProjectById(Long projectId) {
-        return projectRepository.findById(projectId).orElse(null);
+    public Optional<Project> getProjectById(Long projectId) {
+        return projectRepository.findById(projectId); // This already returns an Optional<Project>
     }
 
     public void deleteProject(Long projectId) {
