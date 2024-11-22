@@ -32,10 +32,11 @@ public class EmployeeController {
 
     @PostMapping("/save")
     public String saveOrUpdateEmployee(@ModelAttribute("employee") Employee employee) {
-        employeeService.saveOrUpdate(employee.getId() == 0 ? employee : employee);
+        // Use ternary operator to decide whether to save a new employee or update an existing one
+        employee.getId() == 0 ? employeeService.save(employee) : employeeService.saveOrUpdate(employee);
+    
         return "redirect:/employee/list"; // Redirect to the employee list page after save/update
     }
-
     @GetMapping("/update")
     public String showFormForUpdate(@RequestParam("employeeId") int id, Model model) {
         model.addAttribute("employee", employeeService.findById(id)); // Fetch and add employee to the model
