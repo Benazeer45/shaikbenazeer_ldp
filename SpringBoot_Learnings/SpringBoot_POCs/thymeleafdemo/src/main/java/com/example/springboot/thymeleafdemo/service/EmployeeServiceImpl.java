@@ -3,23 +3,15 @@ package com.example.springboot.thymeleafdemo.service;
 import com.example.springboot.thymeleafdemo.dao.EmployeeRepository;
 import com.example.springboot.thymeleafdemo.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
-//    private final EmployeeDao employeeDao;
-//
-//    @Autowired
-//    public EmployeeServiceImpl(@Qualifier("employeeDaoJpaImpl") EmployeeDao employeeDao) {
-//        this.employeeDao = employeeDao;
-//    }
+public class EmployeeServiceImpl implements EmployeeService {
 
-    //using jpa repository
+    // Using JPA repository
     private final EmployeeRepository employeeRepository;
 
     @Autowired
@@ -33,36 +25,22 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-//    @Transactional - we can remive because jpa provides this funcitonality
     public List<Employee> findAll() {
         return employeeRepository.findAll();
-//        return employeeRepository.findAllByOrderBylastnameAsc();
     }
 
     @Override
-//    @Transactional
     public Employee findById(int employeeId) {
-        Optional<Employee> result=employeeRepository.findById(employeeId);
-        Employee theEmployee=null;
-        if (result.isPresent()){
-            theEmployee=result.get();
-        }
-        else{
-            throw new RuntimeException("Didnt find employee id - "+employeeId);
-        }
-        return theEmployee;
-
-//        return employeeRepository.findById(employeeId);
+        return employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new RuntimeException("Didn't find employee with id - " + employeeId));
     }
 
     @Override
-//    @Transactional
-    public void save(Employee theEmployee) {
-        employeeRepository.save(theEmployee);
+    public void save(Employee employee) {
+        employeeRepository.save(employee);
     }
 
     @Override
-//    @Transactional
     public void deleteById(int employeeId) {
         employeeRepository.deleteById(employeeId);
     }
