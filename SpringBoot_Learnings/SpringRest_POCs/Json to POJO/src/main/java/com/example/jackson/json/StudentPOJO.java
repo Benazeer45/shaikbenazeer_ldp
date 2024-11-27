@@ -1,67 +1,25 @@
 package com.example.jackson.json;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter // Generates getters for all fields
+@Setter // Generates setters for all fields
+@NoArgsConstructor // No-args constructor
+@AllArgsConstructor // All-args constructor
+@JsonIgnoreProperties(ignoreUnknown = true) // Ignores unknown JSON properties during deserialization
 public class StudentPOJO {
     private int id;
     private String firstName;
     private String lastName;
     private boolean active;
-    private Address address;  // Nested Address object
-    private List<String> languages;  // Array of languages
-
-    // Constructor
-    public StudentPOJO() {}
-
-    // Getters and Setters
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public List<String> getLanguages() {
-        return languages;
-    }
-
-    public void setLanguages(List<String> languages) {
-        this.languages = languages;
-    }
+    private Address address; 
+    private List<String> languages; 
 }

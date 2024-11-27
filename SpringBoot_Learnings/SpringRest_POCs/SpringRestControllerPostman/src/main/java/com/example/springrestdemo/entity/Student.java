@@ -1,34 +1,22 @@
-package com.example.springrestdemo.entity;
+package com.example.jackson.json;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+@Getter // Generates getters for all fields
+@Setter // Generates setters for all fields
+@NoArgsConstructor // No-args constructor
+@AllArgsConstructor // All-args constructor
 public class Student {
-
+    private int id;
     private String firstName;
     private String lastName;
 
-    // No-argument constructor
-    public Student() {
-    }
-
-    // Parameterized constructor
-    public Student(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
-    // Getters and Setters
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 }
