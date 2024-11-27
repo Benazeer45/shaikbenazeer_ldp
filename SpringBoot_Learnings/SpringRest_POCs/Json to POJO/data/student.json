@@ -1,0 +1,14 @@
+{
+  "id": 1,
+  "firstName": "John",
+  "lastName": "Doe",
+  "active": true,
+  "address": {
+    "street": "123 Main St",
+    "city": "Springfield",
+    "state": "IL",
+    "zip": "62701"
+  },
+  "languages": ["English", "Spanish", "German"],
+  "company": "Zemoso"
+}
