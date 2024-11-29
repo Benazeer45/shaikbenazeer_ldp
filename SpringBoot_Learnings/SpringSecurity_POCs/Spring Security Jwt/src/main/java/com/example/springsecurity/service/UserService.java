@@ -13,7 +13,7 @@ public class UserService {
 
     private final JWTService jwtService;
     private final AuthenticationManager authManager;
-    private final UserRepo repo;
+    private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(JWTService jwtService, AuthenticationManager authManager, UserRepo repo, PasswordEncoder passwordEncoder) {
