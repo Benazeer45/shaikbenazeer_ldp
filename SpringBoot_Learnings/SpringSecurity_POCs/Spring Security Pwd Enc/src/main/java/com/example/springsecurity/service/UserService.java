@@ -1,21 +1,23 @@
 package com.example.springsecurity.service;
 
 import com.example.springsecurity.model.Users;
-import com.example.springsecurity.repo.UserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.example.springsecurity.repo.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepo repo;
+    private final UserRepo repo;
+    private final PasswordEncoder passwordEncoder;
 
+    public UserService(UserRepo repo, PasswordEncoder passwordEncoder) {
+        this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-    private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     public Users register(Users user) {
-        user.setPassword(encoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         repo.save(user);
         return user;
     }

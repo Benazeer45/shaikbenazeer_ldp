@@ -2,7 +2,7 @@ package com.example.springsecurity.service;
 
 import com.example.springsecurity.model.UserPrincipal;
 import com.example.springsecurity.model.Users;
-import com.example.springsecurity.repo.UserRepo;
+import com.example.springsecurity.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
