@@ -20,6 +20,8 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Using IDENTITY for better alignment with simpler databases
     private Long projectId;
 
+
+    @NotEmpty(message = "Project name should not be empty")
     private String projectName;
 
 }

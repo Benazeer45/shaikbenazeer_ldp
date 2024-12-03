@@ -21,7 +21,7 @@ public class EmployeeController {
     // Get all employees
     @GetMapping
     public List<Employee> getAllEmployees() {
-        return employeeService.getEmployeeDetails(null); // Fetch all employees
+        return employeeService.getEmployeeDetails(); // Removed null parameter
     }
 
     // Get employee by ID
@@ -30,13 +30,11 @@ public class EmployeeController {
         return employeeService.getEmployeeById(id); // Fetch employee by ID
     }
 
-
     // Create a new employee
     @PostMapping
-    public ResponseEntity<String> createEmployee(@RequestBody Employee employee) {
-        employeeService.saveOrUpdateEmployee(employee, null); // Save employee without projects
-        return new ResponseEntity<>("Created new employee successfully", HttpStatus.CREATED);
-
+    public ResponseEntity<Employee> createEmployee(@RequestBody Employee employee) {
+        Employee createdEmployee = employeeService.saveOrUpdateEmployee(employee, null); // Save employee without projects
+        return new ResponseEntity<>(createdEmployee, HttpStatus.CREATED); // Return newly created entity
     }
 
     // Update an existing employee

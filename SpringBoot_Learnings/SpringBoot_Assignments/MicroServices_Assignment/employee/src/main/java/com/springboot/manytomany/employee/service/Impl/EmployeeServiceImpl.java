@@ -2,6 +2,7 @@ package com.springboot.manytomany.employee.service.Impl;
 
 import com.springboot.manytomany.employee.entity.Employee;
 import com.springboot.manytomany.employee.entity.Project;
+import com.springboot.manytomany.employee.exception.ResourceNotFoundException;
 import com.springboot.manytomany.employee.repository.EmployeeRepository;
 import com.springboot.manytomany.employee.service.EmployeeService;
 import com.springboot.manytomany.employee.service.ProjectClient;
@@ -25,28 +26,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public String saveOrUpdateEmployee(Employee emp, List<Long> projectIds) {
-        // Get the projects from the Project Service using Feign client
         List<Project> projects = projectClient.getProjectsByIds(projectIds);
-
-        // Check if employee already exists with the same name and project assignments
         List<Employee> existingEmployees = employeeRepository.findByEmpNameAndAssignedProjects(emp.getEmpName(), new HashSet<>(projects));
         if (!existingEmployees.isEmpty()) {
             return "Employee with the same name and assigned projects already exists.";
         }
-
-        // Assign projects to the employee
         emp.setAssignedProjects(new HashSet<>(projects));
         employeeRepository.save(emp);
         return null;
     }
 
     @Override
-    public List<Employee> getEmployeeDetails(Long empId) {
-        if (empId != null) {
-            return employeeRepository.findAllByEmpId(empId);
-        } else {
-            return employeeRepository.findAll();
-        }
+    public List<Employee> getEmployeeDetails() { // Removed id parameter
+        return employeeRepository.findAll();
     }
 
     @Override
@@ -56,13 +48,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee getEmployeeById(Long empId) {
-        return employeeRepository.findById(empId).orElse(null);
+        return employeeRepository.findById(empId).orElseThrow(() -> 
+            new ResourceNotFoundException("Employee not found with ID: " + empId));
     }
 
     @Override
     public Employee assignProjectToEmployee(Long empId, Long projectId) {
-        Employee employee = employeeRepository.findById(empId).orElseThrow(() -> new RuntimeException("Employee not found"));
-        Project project = projectClient.getProjectById(projectId);  // Fetch project details from Project Service
+        Employee employee = employeeRepository.findById(empId).orElseThrow(() -> 
+            new ResourceNotFoundException("Employee not found with ID: " + empId));
+        Project project = projectClient.getProjectById(projectId); 
         employee.getAssignedProjects().add(project);
         return employeeRepository.save(employee);
     }
