@@ -26,10 +26,7 @@ public class CommentRestController {
     @GetMapping("/posts/{id}/comments")
     public ResponseEntity<Object> getAllCommentsByPostId(@PathVariable(value = "id") Long postId) {
         List<Comment> comments = commentService.findByPostId(postId);
-        if (comments.isEmpty()) {
-            return new ResponseEntity<>(String.format("No comments found for post ID %d", postId), HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(comments, HttpStatus.OK);
+        return new ResponseEntity<>(comments.isEmpty() ? new Object[]{} : comments, HttpStatus.OK);
     }
 
     @PostMapping("/posts/{id}/comments")
@@ -60,12 +57,9 @@ public class CommentRestController {
     public ResponseEntity<Object> updateComment(@PathVariable("id") long id,
                                                 @Valid @RequestBody Comment commentRequest,
                                                 BindingResult result) {
-        if (result.hasErrors()) {
-            return new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST);
-        }
-
-        Comment updatedComment = commentService.updateComment(id, commentRequest);
-        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
+        return result.hasErrors() 
+            ? new ResponseEntity<>(result.getAllErrors(), HttpStatus.BAD_REQUEST)
+            : new ResponseEntity<>(commentService.updateComment(id, commentRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/comments/{id}")
