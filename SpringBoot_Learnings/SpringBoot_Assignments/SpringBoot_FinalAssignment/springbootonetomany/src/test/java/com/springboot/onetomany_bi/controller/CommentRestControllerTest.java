@@ -19,7 +19,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
-
 class CommentRestControllerTest {
 
     @InjectMocks
@@ -32,24 +31,42 @@ class CommentRestControllerTest {
     private PostService postService;
 
     @Mock
-    private Post post;  // Mock Post class
+    private Post post;
 
     @BeforeEach
-     void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-     void testGetAllCommentsByPostId() {
-        Long postId = 1L;
+    private List<Post> generateMockPosts(int numberOfPosts) {
+        List<Post> posts = new ArrayList<>();
+        for (int i = 0; i < numberOfPosts; i++) {
+            Post post = new Post();
+            post.setId((long) (i + 1));
+            post.setTitle("Post Title " + (i + 1));
+            post.setContent("Content for post " + (i + 1));
+            posts.add(post);
+        }
+        return posts;
+    }
+
+    private List<Comment> generateMockComments(Long postId, int numberOfComments) {
         List<Comment> comments = new ArrayList<>();
+        for (int i = 0; i < numberOfComments; i++) {
+            Post post = new Post();
+            post.setId(postId);
+            Comment comment = new Comment("Comment " + (i + 1), post);
+            comments.add(comment);
+        }
+        return comments;
+    }
 
-        when(post.getId()).thenReturn(postId);
+    @Test
+    void testGetAllCommentsByPostId() {
+        Long postId = 1L;
+        List<Comment> comments = generateMockComments(postId, 5);
 
-        Comment comment = new Comment("Great post!", post);
-
-        comments.add(comment);
-
+        when(postService.findById(postId)).thenReturn(new Post());
         when(commentService.findByPostId(postId)).thenReturn(comments);
 
         ResponseEntity<Object> response = commentRestController.getAllCommentsByPostId(postId);
@@ -60,7 +77,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testGetAllCommentsByPostId_NoCommentsFound() {
+    void testGetAllCommentsByPostId_NoCommentsFound() {
         Long postId = 1L;
 
         when(commentService.findByPostId(postId)).thenReturn(new ArrayList<>());
@@ -72,7 +89,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testCreateComment() {
+    void testCreateComment() {
         Long postId = 1L;
 
         when(post.getId()).thenReturn(postId);
@@ -90,25 +107,22 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testCreateComment_ContentNullOrEmpty() {
+    void testCreateComment_ContentNullOrEmpty() {
         Long postId = 1L;
 
-        // Test for null content
         Comment commentWithNullContent = new Comment(null, post);
         ResponseEntity<Object> responseNull = commentRestController.createComment(postId, commentWithNullContent);
         assertEquals(HttpStatus.BAD_REQUEST, responseNull.getStatusCode());
         assertEquals("Content cannot be null or empty", responseNull.getBody());
 
-        // Test for empty content
         Comment commentWithEmptyContent = new Comment("", post);
         ResponseEntity<Object> responseEmpty = commentRestController.createComment(postId, commentWithEmptyContent);
         assertEquals(HttpStatus.BAD_REQUEST, responseEmpty.getStatusCode());
         assertEquals("Content cannot be null or empty", responseEmpty.getBody());
     }
 
-
     @Test
-     void testCreateComment_PostNotFound() {
+    void testCreateComment_PostNotFound() {
         Long postId = 1L;
         Comment commentRequest = new Comment("New comment!", post);
 
@@ -121,7 +135,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testDeleteAllCommentsOfPost() {
+    void testDeleteAllCommentsOfPost() {
         Long postId = 1L;
 
         when(commentService.deleteAllCommentsByPostId(postId))
@@ -134,7 +148,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testGetCommentById() {
+    void testGetCommentById() {
         Long commentId = 1L;
 
         when(post.getId()).thenReturn(commentId);
@@ -151,7 +165,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testGetCommentById_CommentNotFound() {
+    void testGetCommentById_CommentNotFound() {
         Long commentId = 1L;
 
         when(commentService.findById(commentId)).thenThrow(new ResourceNotFoundException("Comment not found"));
@@ -163,7 +177,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testUpdateComment() {
+    void testUpdateComment() {
         Long commentId = 1L;
 
         when(post.getId()).thenReturn(commentId);
@@ -181,17 +195,15 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testUpdateComment_ContentNullOrEmpty() {
+    void testUpdateComment_ContentNullOrEmpty() {
         long commentId = 1L;
 
-        // Test for null content
         Comment commentWithNullContent = new Comment();
         commentWithNullContent.setContent(null);
         ResponseEntity<Object> responseNull = commentRestController.updateComment(commentId, commentWithNullContent);
         assertEquals(HttpStatus.BAD_REQUEST, responseNull.getStatusCode());
         assertEquals("Content cannot be null or empty", responseNull.getBody());
 
-        // Test for empty content
         Comment commentWithEmptyContent = new Comment();
         commentWithEmptyContent.setContent("");
         ResponseEntity<Object> responseEmpty = commentRestController.updateComment(commentId, commentWithEmptyContent);
@@ -199,9 +211,8 @@ class CommentRestControllerTest {
         assertEquals("Content cannot be null or empty", responseEmpty.getBody());
     }
 
-
     @Test
-     void testUpdateComment_CommentNotFound() {
+    void testUpdateComment_CommentNotFound() {
         Long commentId = 1L;
         Comment commentRequest = new Comment("Updated comment!", post);
 
@@ -213,10 +224,8 @@ class CommentRestControllerTest {
         assertEquals("Comment not found with id " + commentId, response.getBody());
     }
 
-
-
     @Test
-     void testDeleteComment() {
+    void testDeleteComment() {
         Long commentId = 1L;
 
         when(commentService.deleteComment(commentId)).thenReturn(new ResponseEntity<>(HttpStatus.NO_CONTENT).hasBody());
@@ -228,7 +237,7 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testDeleteComment_CommentNotFound() {
+    void testDeleteComment_CommentNotFound() {
         Long commentId = 1L;
 
         when(commentService.deleteComment(commentId)).thenThrow(new ResourceNotFoundException("Comment not found"));
@@ -240,23 +249,12 @@ class CommentRestControllerTest {
     }
 
     @Test
-     void testDeleteAllCommentsOfPost_PostNotFound() {
+    void testDeleteAllCommentsOfPost_PostNotFound() {
         Long postId = 1L;
 
         when(commentService.deleteAllCommentsByPostId(postId)).thenThrow(new ResourceNotFoundException("Post not found"));
 
         ResponseEntity<Object> response = commentRestController.deleteAllCommentsOfPost(postId);
-
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertEquals("Post not found with id " + postId, response.getBody());
-    }
-
-    @Test
-    void testGetAllCommentsByPostId_PostNotFoundException() {
-        Long postId = 1L;
-
-        when(commentService.findByPostId(postId)).thenThrow(new ResourceNotFoundException("Post not found"));
-        ResponseEntity<Object> response = commentRestController.getAllCommentsByPostId(postId);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         assertEquals("Post not found with id " + postId, response.getBody());

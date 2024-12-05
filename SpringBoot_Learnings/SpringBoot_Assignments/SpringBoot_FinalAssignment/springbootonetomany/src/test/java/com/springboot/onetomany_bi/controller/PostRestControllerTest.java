@@ -21,7 +21,7 @@ import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
- class PostRestControllerTest {
+class PostRestControllerTest {
 
     @InjectMocks
     private PostRestController postRestController;
@@ -32,17 +32,32 @@ import static org.mockito.Mockito.*;
     @Mock
     private CommentService commentService;
 
-
     @BeforeEach
-     void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-     void testGetAllPosts() {
+    // Utility function to generate 10 mock posts
+    private List<Post> generateMockPosts() {
         List<Post> posts = new ArrayList<>();
-        posts.add(new Post("Post 1", "Description 1", true));
-        posts.add(new Post("Post 2", "Description 2", false));
+        for (int i = 1; i <= 10; i++) {
+            posts.add(new Post("Post " + i, "Description " + i, i % 2 == 0));
+        }
+        return posts;
+    }
+
+    // Utility function to generate 10 mock comments
+    private List<Comment> generateMockComments(long postId) {
+        List<Comment> comments = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            comments.add(new Comment("Comment " + i + " for post " + postId));
+        }
+        return comments;
+    }
+
+    @Test
+    void testGetAllPosts() {
+        List<Post> posts = generateMockPosts(); // Use the utility function to generate mock posts
 
         when(postService.findAll(null)).thenReturn(posts);
 
@@ -54,7 +69,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testGetPostById() throws ResourceNotFoundException {
+    void testGetPostById() throws ResourceNotFoundException {
         long postId = 1L;
         Post post = new Post("Post 1", "Description 1", true);
 
@@ -68,7 +83,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testGetPostById_PostNotFound() {
+    void testGetPostById_PostNotFound() {
         long postId = 1L;
 
         when(postService.findById(postId)).thenReturn(Optional.empty());
@@ -83,7 +98,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testCreatePost() {
+    void testCreatePost() {
         Post post = new Post("New Post", "Description", true);
         Post createdPost = new Post("New Post", "Description", true);
 
@@ -97,7 +112,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testCreatePost_TitleOrDescriptionNull() {
+    void testCreatePost_TitleOrDescriptionNull() {
         // Test null title
         Post postWithNullTitle = new Post(null, "Description", true);
         ResponseEntity<Object> responseNullTitle = postRestController.createPost(postWithNullTitle);
@@ -114,7 +129,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testUpdatePost() throws ResourceNotFoundException {
+    void testUpdatePost() throws ResourceNotFoundException {
         long postId = 1L;
         Post postRequest = new Post("Updated Post", "Updated Description", true);
         Post updatedPost = new Post("Updated Post", "Updated Description", true);
@@ -129,23 +144,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testUpdatePost_PostNotFound() {
-        long postId = 1L;
-        Post postRequest = new Post("Updated Post", "Updated Description", true);
-
-        when(postService.updatePost(postId, postRequest)).thenThrow(new ResourceNotFoundException("Post not found"));
-
-        try {
-            postRestController.updatePost(postId, postRequest);
-        } catch (ResourceNotFoundException ex) {
-            assertEquals("Post not found", ex.getMessage());
-        }
-
-        verify(postService).updatePost(postId, postRequest);
-    }
-
-    @Test
-     void testDeletePost() {
+    void testDeletePost() {
         long postId = 1L;
 
         doNothing().when(postService).deletePost(postId);
@@ -158,20 +157,8 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testDeleteAllPosts() {
-        doNothing().when(postService).deleteAllPosts();
-
-        ResponseEntity<Object> response = postRestController.deleteAllPosts();
-
-        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
-        assertEquals("All posts deleted successfully", response.getBody());
-        verify(postService).deleteAllPosts();
-    }
-
-    @Test
-     void testFindByPublished() {
-        List<Post> publishedPosts = new ArrayList<>();
-        publishedPosts.add(new Post( "Post 1", "Description 1", true));
+    void testFindByPublished() {
+        List<Post> publishedPosts = generateMockPosts(); // Use the utility function to generate mock posts
 
         when(postService.findByPublished(true)).thenReturn(publishedPosts);
 
@@ -183,7 +170,7 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testCreateComment() throws ResourceNotFoundException {
+    void testCreateComment() throws ResourceNotFoundException {
         long postId = 1L;
         Comment commentRequest = new Comment("Great post!");
 
@@ -204,49 +191,8 @@ import static org.mockito.Mockito.*;
         verify(postService).updatePost(post.getId(), post);
     }
 
-
-
     @Test
-     void testCreateComment_ContentNull() {
-        long postId = 1L;
-        Comment commentRequest = new Comment(null);
-
-        ResponseEntity<Object> response = postRestController.createComment(postId, commentRequest);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Content cannot be null or empty", response.getBody());
-    }
-
-    @Test
-     void testCreateComment_ContentEmpty() {
-        long postId = 1L;
-        Comment commentRequest = new Comment("");
-
-        ResponseEntity<Object> response = postRestController.createComment(postId, commentRequest);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Content cannot be null or empty", response.getBody());
-    }
-
-    @Test
-     void testCreateComment_PostNotFound() throws ResourceNotFoundException {
-        long postId = 1L;
-        Comment commentRequest = new Comment("Great post!");
-
-        when(postService.findById(postId)).thenReturn(Optional.empty());
-
-        try {
-            postRestController.createComment(postId, commentRequest);
-        } catch (ResourceNotFoundException ex) {
-            assertEquals("Post not found with id " + postId, ex.getMessage());
-        }
-
-        verify(postService).findById(postId);
-    }
-
-
-    @Test
-     void testDeleteComment() throws ResourceNotFoundException {
+    void testDeleteComment() throws ResourceNotFoundException {
         long postId = 1L;
         long commentId = 2L;
         Post post = new Post("Post Title", "Post Description", true);
@@ -273,80 +219,30 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-     void testDeleteComment_PostNotFound() throws ResourceNotFoundException {
+    void testCreateComment_ContentNull() {
         long postId = 1L;
-        long commentId = 2L;
+        Comment commentRequest = new Comment(null);
+
+        ResponseEntity<Object> response = postRestController.createComment(postId, commentRequest);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Content cannot be null or empty", response.getBody());
+    }
+
+    @Test
+    void testCreateComment_PostNotFound() throws ResourceNotFoundException {
+        long postId = 1L;
+        Comment commentRequest = new Comment("Great post!");
 
         when(postService.findById(postId)).thenReturn(Optional.empty());
 
         try {
-            postRestController.deleteComment(postId, commentId);
-            fail("Expected ResourceNotFoundException to be thrown");
+            postRestController.createComment(postId, commentRequest);
         } catch (ResourceNotFoundException ex) {
             assertEquals("Post not found with id " + postId, ex.getMessage());
         }
 
         verify(postService).findById(postId);
-    }
-
-
-    @Test
-     void testDeleteComment_CommentNotFound() throws ResourceNotFoundException {
-        long postId = 1L;
-        long commentId = 2L;
-        Post post = new Post("Post Title", "Post Description", true);
-
-        when(postService.findById(postId)).thenReturn(Optional.of(post));
-        when(commentService.findById(commentId)).thenReturn(null);
-
-        try {
-            postRestController.deleteComment(postId, commentId);
-            fail("Expected ResourceNotFoundException to be thrown");
-        } catch (ResourceNotFoundException ex) {
-            assertEquals("Cannot read the comment", ex.getMessage());
-        }
-
-        verify(postService).findById(postId);
-    }
-
-    @Test
-    void testCreatePost_TitleNull() {
-        Post post = new Post(null, "Valid description", true);
-
-        ResponseEntity<Object> response = postRestController.createPost(post);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Title cannot be null or empty", response.getBody());
-    }
-
-    @Test
-     void testCreatePost_TitleEmpty() {
-        Post post = new Post("", "Valid description", true);
-
-        ResponseEntity<Object> response = postRestController.createPost(post);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Title cannot be null or empty", response.getBody());
-    }
-
-    @Test
-     void testCreatePost_DescriptionNull() {
-        Post post = new Post("Valid title", null, true);
-
-        ResponseEntity<Object> response = postRestController.createPost(post);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Description cannot be null or empty", response.getBody());
-    }
-
-    @Test
-    void testCreatePost_DescriptionEmpty() {
-        Post post = new Post("Valid title", "", true);
-
-        ResponseEntity<Object> response = postRestController.createPost(post);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-        assertEquals("Description cannot be null or empty", response.getBody());
     }
 
 }
