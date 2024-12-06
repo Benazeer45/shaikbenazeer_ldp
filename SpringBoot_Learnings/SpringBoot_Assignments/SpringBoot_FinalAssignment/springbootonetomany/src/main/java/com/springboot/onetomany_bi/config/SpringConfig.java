@@ -18,16 +18,6 @@ public class ModelMapperConfig {
         return new ModelMapper();
     }
 
-    // Bean for CommentService
-    @Bean
-    public CommentService commentService() {
-        return new CommentServiceImpl();
-    }
 
-    // Bean for PostService
-    @Bean
-    public PostService postService() {
-        return new PostServiceImpl();
-    }
 
 }

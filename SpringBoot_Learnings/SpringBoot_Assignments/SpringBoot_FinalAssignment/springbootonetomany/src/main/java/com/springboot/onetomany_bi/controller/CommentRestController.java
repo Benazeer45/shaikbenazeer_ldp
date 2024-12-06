@@ -1,7 +1,9 @@
 package com.springboot.onetomany_bi.controller;
 
 import com.springboot.onetomany_bi.constants.Constants;
-import com.springboot.onetomany_bi.dto.CommentDTO;
+import com.springboot.onetomany_bi.dto.CommentRequestDTO;
+import com.springboot.onetomany_bi.dto.CommentResponseDTO;
+import com.springboot.onetomany_bi.dto.PostResponseDTO;
 import com.springboot.onetomany_bi.service.CommentService;
 import com.springboot.onetomany_bi.service.PostService;
 import jakarta.validation.Valid;
@@ -28,13 +30,13 @@ public class CommentRestController {
 
   @GetMapping("/posts/{postId}/comments")
   public ResponseEntity<Object> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
-    List<CommentDTO> comments = commentService.findByPostId(postId);
+    List<CommentResponseDTO> comments = commentService.findByPostId(postId);
     return new ResponseEntity<>(comments, HttpStatus.OK);
   }
 
   @PostMapping("/posts/{postId}/comments")
   public ResponseEntity<Object> createComment(@PathVariable(value = "postId") Long postId,
-                                              @Valid @RequestBody CommentDTO commentRequest,
+                                              @Valid @RequestBody CommentRequestDTO commentRequest,
                                               BindingResult bindingResult) {
     return bindingResult.hasErrors()
             ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
@@ -45,13 +47,13 @@ public class CommentRestController {
 
   @GetMapping("/comments/{id}")
   public ResponseEntity<Object> getCommentById(@PathVariable(value = "id") Long id) {
-    CommentDTO comment = commentService.findById(id);
+    CommentResponseDTO comment = commentService.findById(id);
     return new ResponseEntity<>(comment, HttpStatus.OK);
   }
 
   @PutMapping("/comments/{id}")
   public ResponseEntity<Object> updateComment(@PathVariable("id") long id,
-                                              @Valid @RequestBody CommentDTO commentRequest,
+                                              @Valid @RequestBody CommentRequestDTO commentRequest,
                                               BindingResult bindingResult) {
     return bindingResult.hasErrors()
             ? new ResponseEntity<>(bindingResult.getAllErrors().stream()

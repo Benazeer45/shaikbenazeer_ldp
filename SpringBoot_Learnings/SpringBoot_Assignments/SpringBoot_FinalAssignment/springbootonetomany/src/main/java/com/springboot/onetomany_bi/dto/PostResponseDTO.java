@@ -1,7 +1,5 @@
 package com.springboot.onetomany_bi.dto;
 
-import com.springboot.onetomany_bi.constants.Constants;
-import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -14,21 +12,13 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
+public class PostResponseDTO {
 
     private Long id;
-
-    @Size(min = 5, max = 20, message = Constants.TITLE_REQUIRED)
     private String title;
-
-    @Size(min = 10, max = 200, message = Constants.DESCRIPTION_REQUIRED)
     private String description;
-
-    @NotNull(message = Constants.PUBLISHED_NOT_FOUND)
     private boolean published;
-
-    private List<CommentDTO> comments;  // Include associated comments
-
+    private List<CommentResponseDTO> comments;  // Include associated comments in response
     private Date createdAt;  // Date when the post was created
     private Date updatedAt;  // Date when the post was last updated
 }

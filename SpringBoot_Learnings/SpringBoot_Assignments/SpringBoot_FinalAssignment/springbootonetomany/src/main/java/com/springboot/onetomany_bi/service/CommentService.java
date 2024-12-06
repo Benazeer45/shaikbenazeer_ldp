@@ -3,9 +3,12 @@ package com.springboot.onetomany_bi.service;
 
 import com.springboot.onetomany_bi.dto.CommentDTO;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
+@Service
 public interface CommentService {
 
     List<CommentDTO> findByPostId(Long postId);

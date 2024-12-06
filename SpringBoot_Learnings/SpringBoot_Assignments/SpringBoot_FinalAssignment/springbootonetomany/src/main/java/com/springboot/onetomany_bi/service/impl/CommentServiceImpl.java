@@ -18,21 +18,20 @@ import java.util.stream.Collectors;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper modelMapper) {
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
+    }
 
     @Override
     public List<CommentDTO> findByPostId(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
-        if (comments.isEmpty()) {
-            throw new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND  + postId);
-        }
         return comments.stream()
                 .map(comment -> modelMapper.map(comment, CommentDTO.class))
                 .collect(Collectors.toList());
@@ -47,9 +46,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO createComment(Long postId, CommentDTO commentRequest) throws ResourceNotFoundException {
-        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
-            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
-        }
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
 
@@ -69,10 +65,6 @@ public class CommentServiceImpl implements CommentService {
         Comment existingComment = commentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + id));
 
-        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
-            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
-        }
-
         existingComment.setContent(commentRequest.getContent());
         Comment updatedComment = commentRepository.save(existingComment);
         return modelMapper.map(updatedComment, CommentDTO.class);
@@ -90,13 +82,12 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public String deleteCommentbyId(Long postId, Long commentId) throws ResourceNotFoundException {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND+ postId));
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
 
-        Comment comment = (Comment) commentRepository.findByIdAndPostId(commentId, postId)
-                .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND+ commentId + Constants.POST_NOT_FOUND+ postId));
+        Comment comment = commentRepository.findByIdAndPostId(commentId, postId)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + commentId + Constants.POST_NOT_FOUND + postId));
 
         commentRepository.delete(comment);
         return Constants.COMMENT_DELETED_SUCCESSFULLY;
     }
-
 }

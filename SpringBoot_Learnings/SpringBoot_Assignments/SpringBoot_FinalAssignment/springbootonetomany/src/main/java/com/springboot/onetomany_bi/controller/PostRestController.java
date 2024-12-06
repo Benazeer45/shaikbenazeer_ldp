@@ -1,8 +1,10 @@
 package com.springboot.onetomany_bi.controller;
 
 import com.springboot.onetomany_bi.constants.Constants;
-import com.springboot.onetomany_bi.dto.CommentDTO;
-import com.springboot.onetomany_bi.dto.PostDTO;
+import com.springboot.onetomany_bi.dto.CommentRequestDTO;
+import com.springboot.onetomany_bi.dto.CommentResponseDTO;
+import com.springboot.onetomany_bi.dto.PostRequestDTO;
+import com.springboot.onetomany_bi.dto.PostResponseDTO;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
 import com.springboot.onetomany_bi.service.PostService;
 import com.springboot.onetomany_bi.service.CommentService;
@@ -32,7 +34,7 @@ public class PostRestController {
 
 
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostDTO>> getAllPosts(
+    public ResponseEntity<Page<PostResponseDTO>> getAllPosts(
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size,
             @RequestParam(required = false) Boolean published,
@@ -41,20 +43,18 @@ public class PostRestController {
         int pageNumber = (page != null) ? page : 0;
         int pageSize = (size != null) ? size : 10;
 
-        Page<PostDTO> posts = postService.findAll(pageNumber, pageSize, published, title);
+        Page<PostResponseDTO> posts = postService.findAll(pageNumber, pageSize, published, title);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
-
-
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<Object> getPostById(@PathVariable("postId") Long postId) {
-        PostDTO post = postService.findById(postId);
+    public ResponseEntity<PostResponseDTO> getPostById(@PathVariable("postId") Long postId) {
+        PostResponseDTO post = postService.findById(postId);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Object> createPost(@Valid @RequestBody PostDTO postRequest,
+    public ResponseEntity<Object> createPost(@Valid @RequestBody PostRequestDTO postRequest,
                                              BindingResult bindingResult) {
         return bindingResult.hasErrors()
                 ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
@@ -65,7 +65,7 @@ public class PostRestController {
 
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
-                                             @Valid @RequestBody PostDTO postRequest,
+                                             @Valid @RequestBody PostRequestDTO postRequest,
                                              BindingResult bindingResult) {
         return bindingResult.hasErrors()
                 ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
@@ -82,7 +82,7 @@ public class PostRestController {
 
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<Object> createComment(@PathVariable(value = "postId") Long postId,
-                                                @Valid @RequestBody CommentDTO commentRequest,
+                                                @Valid @RequestBody CommentRequestDTO commentRequest,
                                                 BindingResult bindingResult) {
         return bindingResult.hasErrors()
                 ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
@@ -92,11 +92,10 @@ public class PostRestController {
     }
 
     @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<Object> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
-        List<CommentDTO> comments = commentService.findByPostId(postId);
+    public ResponseEntity<List<CommentResponseDTO>> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
+        List<CommentResponseDTO> comments = commentService.findByPostId(postId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
-
 
     @DeleteMapping("/posts/{postId}/comments/{commentId}")
     public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
@@ -107,7 +106,4 @@ public class PostRestController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-
-
-
 }

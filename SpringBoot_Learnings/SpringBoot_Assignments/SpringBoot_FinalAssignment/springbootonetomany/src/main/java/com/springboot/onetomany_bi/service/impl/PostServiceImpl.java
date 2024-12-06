@@ -15,75 +15,61 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 @Service
 public class PostServiceImpl implements PostService {
 
-	@Autowired
-	private PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
 
-	@Autowired
-	private ModelMapper modelMapper;
+    @Autowired
+    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
+        this.postRepository = postRepository;
+        this.modelMapper = modelMapper;
+    }
 
-	@Override
-	public Page<PostDTO> findAll(int page, int size, Boolean published, String title) throws ResourceNotFoundException {
-		Pageable pageable = PageRequest.of(page, size);
+    @Override
+    public Page<PostDTO> findAll(int page, int size, Boolean published, String title) throws ResourceNotFoundException {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
+                .and(PostSpecifications.hasTitleContaining(title));
 
-		Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
-				.and(PostSpecifications.hasTitleContaining(title));
+        Page<Post> postPage = postRepository.findAll(spec, pageable);
+        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
+    }
 
-		Page<Post> postPage = postRepository.findAll(spec, pageable);
+    @Override
+    public PostDTO findById(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+        return modelMapper.map(post, PostDTO.class);
+    }
 
-		return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-	}
+    @Override
+    public String createPost(PostDTO postDTO) {
+        Post post = modelMapper.map(postDTO, Post.class);
+        postRepository.save(post);
+        return Constants.POST_CREATED_SUCCESSFULLY;
+    }
 
+    @Override
+    public PostDTO updatePost(Long id, PostDTO postDTO) {
+        Post existingPost = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
 
+        existingPost.setTitle(postDTO.getTitle());
+        existingPost.setDescription(postDTO.getDescription());
+        existingPost.setPublished(postDTO.isPublished());
 
-	@Override
-	public PostDTO findById(Long id) {
-		Post post = postRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
-		return modelMapper.map(post, PostDTO.class);
-	}
+        Post updatedPost = postRepository.save(existingPost);
+        return modelMapper.map(updatedPost, PostDTO.class);
+    }
 
-	@Override
-	public String createPost(PostDTO postDTO) {
-		if (postDTO.getTitle() == null || postDTO.getTitle().isEmpty()) {
-			return Constants.TITLE_REQUIRED;
-		}
-		if (postDTO.getDescription() == null || postDTO.getDescription().isEmpty()) {
-			return Constants.DESCRIPTION_REQUIRED;
-		}
+    @Override
+    public String deletePost(Long id) {
+        Post existingPost = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
 
-		Post post = modelMapper.map(postDTO, Post.class);
-		postRepository.save(post);
-		return Constants.POST_CREATED_SUCCESSFULLY;
-	}
-
-	@Override
-	public PostDTO updatePost(Long id, PostDTO postDTO) {
-		Post existingPost = postRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
-
-		existingPost.setTitle(postDTO.getTitle());
-		existingPost.setDescription(postDTO.getDescription());
-		existingPost.setPublished(postDTO.isPublished());
-
-		Post updatedPost = postRepository.save(existingPost);
-		return modelMapper.map(updatedPost, PostDTO.class);
-	}
-
-	@Override
-	public String deletePost(Long id) {
-		Post existingPost = postRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
-
-		postRepository.deleteById(id);
-		return Constants.POST_DELETED_SUCCESSFULLY;
-	}
-
-
+        postRepository.deleteById(id);
+        return Constants.POST_DELETED_SUCCESSFULLY;
+    }
 }
