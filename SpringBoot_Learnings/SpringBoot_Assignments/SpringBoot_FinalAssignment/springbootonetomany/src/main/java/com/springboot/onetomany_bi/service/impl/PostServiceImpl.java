@@ -45,19 +45,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResDTO createPost(PostReqDTO postDTO) throws ResourceNotFoundException {
-		if (postDTO.getTitle() == null || postDTO.getTitle().isEmpty()) {
-			throw new ResourceNotFoundException.ContentMissingException(Constants.TITLE_REQUIRED);
-		}
-		if (postDTO.getDescription() == null || postDTO.getDescription().isEmpty()) {
-			throw new ResourceNotFoundException.ContentMissingException(Constants.DESCRIPTION_REQUIRED);
-		}
-
+	public PostResDTO createPost(PostReqDTO postDTO) {
 		Post post = modelMapper.map(postDTO, Post.class);
 
 		Post savedPost = postRepository.save(post);
 		return modelMapper.map(savedPost, PostResDTO.class);
 	}
+
 
 	@Override
 	public PostResDTO updatePost(Long id, PostReqDTO postDTO) {
