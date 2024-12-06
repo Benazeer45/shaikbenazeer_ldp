@@ -52,7 +52,14 @@ public class PostRestController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Object> createPost(@RequestBody PostReqDTO postRequest) {
+    public ResponseEntity<Object> createPost(@Valid @RequestBody PostReqDTO postRequest,
+                                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
         PostResDTO createdPost = postService.createPost(postRequest);
         return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
