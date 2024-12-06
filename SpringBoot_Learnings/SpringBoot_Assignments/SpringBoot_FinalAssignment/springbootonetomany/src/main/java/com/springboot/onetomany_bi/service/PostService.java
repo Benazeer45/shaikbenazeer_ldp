@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface PostService {
 
-	List<PostDTO> findAll() throws ResourceNotFoundException;
+	Page<PostDTO> findAll(int page, int size, Boolean published, String title) throws ResourceNotFoundException;
 
 	PostDTO findById(Long id);
 
@@ -18,9 +18,4 @@ public interface PostService {
 
 	String deletePost(Long id) throws ResourceNotFoundException;
 
-	List<PostDTO> findByPublished(boolean published);
-
-	Page<PostDTO> findAllPaginated(int page, int size);
-
-	List<PostDTO> findFilteredPosts(Boolean published, String title);
 }

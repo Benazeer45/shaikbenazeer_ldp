@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.Date;
+import com.springboot.onetomany_bi.constants.Constants;
 
 @Getter
 @Setter
@@ -15,18 +17,18 @@ public class CommentDTO {
 
     private Long id;
 
-    @NotEmpty(message = "Content cannot be empty")
-    @Size(min = 5, max = 500, message = "Content must be between 5 and 500 characters")
+    @Size(min = 5, max = 50, message = Constants.COMMENT_CONTENT_NULL_OR_EMPTY)
     private String content;
 
-    @NotNull(message = "Post ID cannot be null")
+    @NotNull(message = Constants.POST_NOT_FOUND)
     private Long postId;
 
-    @NotEmpty(message = "Title cannot be empty")
-    @Size(max = 100, message = "Title cannot exceed 100 characters")
+    @Size(min = 5, max = 20, message = Constants.TITLE_REQUIRED)
     private String title;
 
-    @NotEmpty(message = "Description cannot be empty")
-    @Size(max = 1000, message = "Description cannot exceed 1000 characters")
+    @Size(min = 10, max = 200, message = Constants.DESCRIPTION_REQUIRED)
     private String description;
+
+    private Date createdAt;  // Date when the comment was created
+    private Date updatedAt;  // Date when the comment was last updated
 }

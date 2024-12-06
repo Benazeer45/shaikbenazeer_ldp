@@ -29,12 +29,17 @@ public class PostServiceImpl implements PostService {
 	private ModelMapper modelMapper;
 
 	@Override
-	public List<PostDTO> findAll() {
-		List<Post> posts = postRepository.findAll();
-		return posts.stream()
-				.map(post -> modelMapper.map(post, PostDTO.class))
-				.collect(Collectors.toList());
+	public Page<PostDTO> findAll(int page, int size, Boolean published, String title) throws ResourceNotFoundException {
+		Pageable pageable = PageRequest.of(page, size);
+
+		Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
+				.and(PostSpecifications.hasTitleContaining(title));
+
+		Page<Post> postPage = postRepository.findAll(spec, pageable);
+
+		return postPage.map(post -> modelMapper.map(post, PostDTO.class));
 	}
+
 
 
 	@Override
@@ -78,31 +83,6 @@ public class PostServiceImpl implements PostService {
 
 		postRepository.deleteById(id);
 		return Constants.POST_DELETED_SUCCESSFULLY;
-	}
-
-	@Override
-	public List<PostDTO> findByPublished(boolean published) {
-		List<Post> posts = postRepository.findByPublished(published);
-		return posts.stream()
-				.map(post -> modelMapper.map(post, PostDTO.class))
-				.collect(Collectors.toList());
-	}
-
-	@Override
-	public Page<PostDTO> findAllPaginated(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		Page<Post> posts = postRepository.findAll(pageable);
-		return posts.map(post -> modelMapper.map(post, PostDTO.class));
-	}
-
-	@Override
-	public List<PostDTO> findFilteredPosts(Boolean published, String title) {
-		Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
-				.and(PostSpecifications.hasTitleContaining(title));
-		List<Post> posts = postRepository.findAll(spec);
-		return posts.stream()
-				.map(post -> modelMapper.map(post, PostDTO.class))
-				.collect(Collectors.toList());
 	}
 
 

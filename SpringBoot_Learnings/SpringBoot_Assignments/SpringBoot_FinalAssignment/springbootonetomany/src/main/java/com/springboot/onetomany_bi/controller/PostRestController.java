@@ -33,12 +33,18 @@ public class PostRestController {
 
     @GetMapping("/posts")
     public ResponseEntity<Page<PostDTO>> getAllPosts(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) Boolean published,
+            @RequestParam(required = false) String title
     ) {
-        Page<PostDTO> posts = postService.findAllPaginated(page, size);
+        int pageNumber = (page != null) ? page : 0;
+        int pageSize = (size != null) ? size : 10;
+
+        Page<PostDTO> posts = postService.findAll(pageNumber, pageSize, published, title);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
+
 
 
     @GetMapping("/posts/{postId}")
@@ -102,13 +108,6 @@ public class PostRestController {
         }
     }
 
-    @GetMapping("/filter")
-    public ResponseEntity<List<PostDTO>> filterPosts(
-            @RequestParam(required = false) Boolean published,
-            @RequestParam(required = false) String title
-    ) {
-        List<PostDTO> posts = postService.findFilteredPosts(published, title);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
-    }
+
 
 }
