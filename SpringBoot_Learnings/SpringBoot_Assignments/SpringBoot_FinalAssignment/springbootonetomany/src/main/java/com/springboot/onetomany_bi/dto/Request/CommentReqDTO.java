@@ -1,4 +1,4 @@
-package com.springboot.onetomany_bi.dto;
+package com.springboot.onetomany_bi.dto.Request;
 
 import com.springboot.onetomany_bi.constants.Constants;
 import jakarta.validation.constraints.*;
@@ -7,15 +7,12 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentRequestDTO {
+public class CommentReqDTO {
 
-    private Long id;
 
     @Size(min = 5, max = 50, message = Constants.COMMENT_CONTENT_NULL_OR_EMPTY)
     private String content;
@@ -29,6 +26,4 @@ public class CommentRequestDTO {
     @Size(min = 10, max = 200, message = Constants.DESCRIPTION_REQUIRED)
     private String description;
 
-    private Date createdAt;  // Date when the comment was created
-    private Date updatedAt;  // Date when the comment was last updated
 }

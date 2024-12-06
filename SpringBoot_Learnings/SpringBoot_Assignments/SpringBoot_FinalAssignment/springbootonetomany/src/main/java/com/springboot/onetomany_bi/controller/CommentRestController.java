@@ -1,9 +1,8 @@
 package com.springboot.onetomany_bi.controller;
 
 import com.springboot.onetomany_bi.constants.Constants;
-import com.springboot.onetomany_bi.dto.CommentRequestDTO;
-import com.springboot.onetomany_bi.dto.CommentResponseDTO;
-import com.springboot.onetomany_bi.dto.PostResponseDTO;
+import com.springboot.onetomany_bi.dto.Request.CommentReqDTO;
+import com.springboot.onetomany_bi.dto.Response.CommentResDTO;
 import com.springboot.onetomany_bi.service.CommentService;
 import com.springboot.onetomany_bi.service.PostService;
 import jakarta.validation.Valid;
@@ -29,37 +28,43 @@ public class CommentRestController {
   }
 
   @GetMapping("/posts/{postId}/comments")
-  public ResponseEntity<Object> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
-    List<CommentResponseDTO> comments = commentService.findByPostId(postId);
+  public ResponseEntity<List<CommentResDTO>> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
+    List<CommentResDTO> comments = commentService.findByPostId(postId);
     return new ResponseEntity<>(comments, HttpStatus.OK);
   }
 
   @PostMapping("/posts/{postId}/comments")
   public ResponseEntity<Object> createComment(@PathVariable(value = "postId") Long postId,
-                                              @Valid @RequestBody CommentRequestDTO commentRequest,
+                                              @Valid @RequestBody CommentReqDTO commentRequest,
                                               BindingResult bindingResult) {
-    return bindingResult.hasErrors()
-            ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
-            .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
-            .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
-            : new ResponseEntity<>(commentService.createComment(postId, commentRequest), HttpStatus.CREATED);
+    if (bindingResult.hasErrors()) {
+      String errors = bindingResult.getAllErrors().stream()
+              .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+              .collect(Collectors.joining(", "));
+      return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+    CommentResDTO createdComment = commentService.createComment(postId, commentRequest);
+    return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
   }
 
   @GetMapping("/comments/{id}")
-  public ResponseEntity<Object> getCommentById(@PathVariable(value = "id") Long id) {
-    CommentResponseDTO comment = commentService.findById(id);
+  public ResponseEntity<CommentResDTO> getCommentById(@PathVariable(value = "id") Long id) {
+    CommentResDTO comment = commentService.findById(id);
     return new ResponseEntity<>(comment, HttpStatus.OK);
   }
 
   @PutMapping("/comments/{id}")
   public ResponseEntity<Object> updateComment(@PathVariable("id") long id,
-                                              @Valid @RequestBody CommentRequestDTO commentRequest,
+                                              @Valid @RequestBody CommentReqDTO commentRequest,
                                               BindingResult bindingResult) {
-    return bindingResult.hasErrors()
-            ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
-            .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
-            .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
-            : new ResponseEntity<>(commentService.updateComment(id, commentRequest), HttpStatus.OK);
+    if (bindingResult.hasErrors()) {
+      String errors = bindingResult.getAllErrors().stream()
+              .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+              .collect(Collectors.joining(", "));
+      return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+    CommentResDTO updatedComment = commentService.updateComment(id, commentRequest);
+    return new ResponseEntity<>(updatedComment, HttpStatus.OK);
   }
 
   @DeleteMapping("/comments/{id}")

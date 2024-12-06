@@ -1,10 +1,10 @@
 package com.springboot.onetomany_bi.controller;
 
 import com.springboot.onetomany_bi.constants.Constants;
-import com.springboot.onetomany_bi.dto.CommentRequestDTO;
-import com.springboot.onetomany_bi.dto.CommentResponseDTO;
-import com.springboot.onetomany_bi.dto.PostRequestDTO;
-import com.springboot.onetomany_bi.dto.PostResponseDTO;
+import com.springboot.onetomany_bi.dto.Request.CommentReqDTO;
+import com.springboot.onetomany_bi.dto.Request.PostReqDTO;
+import com.springboot.onetomany_bi.dto.Response.CommentResDTO;
+import com.springboot.onetomany_bi.dto.Response.PostResDTO;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
 import com.springboot.onetomany_bi.service.PostService;
 import com.springboot.onetomany_bi.service.CommentService;
@@ -32,46 +32,50 @@ public class PostRestController {
         this.commentService = commentService;
     }
 
-
     @GetMapping("/posts")
-    public ResponseEntity<Page<PostResponseDTO>> getAllPosts(
-            @RequestParam(required = false) Integer page,
-            @RequestParam(required = false) Integer size,
+    public ResponseEntity<Page<PostResDTO>> getAllPosts(
+            @RequestParam(defaultValue = "0") Integer page,  // Default page value is 0
+            @RequestParam(defaultValue = "10") Integer size,  // Default size value is 10
             @RequestParam(required = false) Boolean published,
             @RequestParam(required = false) String title
     ) {
-        int pageNumber = (page != null) ? page : 0;
-        int pageSize = (size != null) ? size : 10;
-
-        Page<PostResponseDTO> posts = postService.findAll(pageNumber, pageSize, published, title);
+        // page and size already have default values set, so no need to check for null
+        Page<PostResDTO> posts = postService.findAll(page, size, published, title);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
+
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<PostResponseDTO> getPostById(@PathVariable("postId") Long postId) {
-        PostResponseDTO post = postService.findById(postId);
+    public ResponseEntity<Object> getPostById(@PathVariable("postId") Long postId) {
+        PostResDTO post = postService.findById(postId);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Object> createPost(@Valid @RequestBody PostRequestDTO postRequest,
+    public ResponseEntity<Object> createPost(@Valid @RequestBody PostReqDTO postRequest,
                                              BindingResult bindingResult) {
-        return bindingResult.hasErrors()
-                ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
-                .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(postService.createPost(postRequest), HttpStatus.CREATED);
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+        PostResDTO createdPost = postService.createPost(postRequest);
+        return new ResponseEntity<>(createdPost, HttpStatus.CREATED);
     }
 
     @PutMapping("/posts/{postId}")
     public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
-                                             @Valid @RequestBody PostRequestDTO postRequest,
+                                             @Valid @RequestBody PostReqDTO postRequest,
                                              BindingResult bindingResult) {
-        return bindingResult.hasErrors()
-                ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
-                .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(postService.updatePost(postId, postRequest), HttpStatus.OK);
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+        PostResDTO updatedPost = postService.updatePost(postId, postRequest);
+        return new ResponseEntity<>(updatedPost, HttpStatus.OK);
     }
 
     @DeleteMapping("/posts/{postId}")
@@ -82,18 +86,21 @@ public class PostRestController {
 
     @PostMapping("/posts/{postId}/comments")
     public ResponseEntity<Object> createComment(@PathVariable(value = "postId") Long postId,
-                                                @Valid @RequestBody CommentRequestDTO commentRequest,
+                                                @Valid @RequestBody CommentReqDTO commentRequest,
                                                 BindingResult bindingResult) {
-        return bindingResult.hasErrors()
-                ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
-                .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity<>(commentService.createComment(postId, commentRequest), HttpStatus.CREATED);
+        if (bindingResult.hasErrors()) {
+            String errorMessage = bindingResult.getAllErrors().stream()
+                    .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+        CommentResDTO createdComment = commentService.createComment(postId, commentRequest);
+        return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
 
     @GetMapping("/posts/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDTO>> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
-        List<CommentResponseDTO> comments = commentService.findByPostId(postId);
+    public ResponseEntity<Object> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
+        List<CommentResDTO> comments = commentService.findByPostId(postId);
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 

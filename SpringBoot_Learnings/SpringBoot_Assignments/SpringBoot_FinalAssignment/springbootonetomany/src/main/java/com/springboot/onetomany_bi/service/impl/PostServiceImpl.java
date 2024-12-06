@@ -1,6 +1,7 @@
 package com.springboot.onetomany_bi.service.impl;
 
-import com.springboot.onetomany_bi.dto.PostDTO;
+import com.springboot.onetomany_bi.dto.Request.PostReqDTO;
+import com.springboot.onetomany_bi.dto.Response.PostResDTO;
 import com.springboot.onetomany_bi.entity.Post;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
 import com.springboot.onetomany_bi.repository.PostRepository;
@@ -18,58 +19,65 @@ import org.springframework.stereotype.Service;
 @Service
 public class PostServiceImpl implements PostService {
 
-    private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
+	@Autowired
+	private PostRepository postRepository;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository, ModelMapper modelMapper) {
-        this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
-    }
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Override
-    public Page<PostDTO> findAll(int page, int size, Boolean published, String title) throws ResourceNotFoundException {
-        Pageable pageable = PageRequest.of(page, size);
-        Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
-                .and(PostSpecifications.hasTitleContaining(title));
+	@Override
+	public Page<PostResDTO> findAll(int page, int size, Boolean published, String title) throws ResourceNotFoundException {
+		Pageable pageable = PageRequest.of(page, size);
 
-        Page<Post> postPage = postRepository.findAll(spec, pageable);
-        return postPage.map(post -> modelMapper.map(post, PostDTO.class));
-    }
+		Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
+				.and(PostSpecifications.hasTitleContaining(title));
 
-    @Override
-    public PostDTO findById(Long id) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
-        return modelMapper.map(post, PostDTO.class);
-    }
+		Page<Post> postPage = postRepository.findAll(spec, pageable);
 
-    @Override
-    public String createPost(PostDTO postDTO) {
-        Post post = modelMapper.map(postDTO, Post.class);
-        postRepository.save(post);
-        return Constants.POST_CREATED_SUCCESSFULLY;
-    }
+		return postPage.map(post -> modelMapper.map(post, PostResDTO.class));
+	}
 
-    @Override
-    public PostDTO updatePost(Long id, PostDTO postDTO) {
-        Post existingPost = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+	@Override
+	public PostResDTO findById(Long id) {
+		Post post = postRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+		return modelMapper.map(post, PostResDTO.class);
+	}
 
-        existingPost.setTitle(postDTO.getTitle());
-        existingPost.setDescription(postDTO.getDescription());
-        existingPost.setPublished(postDTO.isPublished());
+	@Override
+	public PostResDTO createPost(PostReqDTO postDTO) throws ResourceNotFoundException {
+		if (postDTO.getTitle() == null || postDTO.getTitle().isEmpty()) {
+			throw new ResourceNotFoundException.ContentMissingException(Constants.TITLE_REQUIRED);
+		}
+		if (postDTO.getDescription() == null || postDTO.getDescription().isEmpty()) {
+			throw new ResourceNotFoundException.ContentMissingException(Constants.DESCRIPTION_REQUIRED);
+		}
 
-        Post updatedPost = postRepository.save(existingPost);
-        return modelMapper.map(updatedPost, PostDTO.class);
-    }
+		Post post = modelMapper.map(postDTO, Post.class);
 
-    @Override
-    public String deletePost(Long id) {
-        Post existingPost = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+		Post savedPost = postRepository.save(post);
+		return modelMapper.map(savedPost, PostResDTO.class);
+	}
 
-        postRepository.deleteById(id);
-        return Constants.POST_DELETED_SUCCESSFULLY;
-    }
+	@Override
+	public PostResDTO updatePost(Long id, PostReqDTO postDTO) {
+		Post existingPost = postRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+
+		existingPost.setTitle(postDTO.getTitle());
+		existingPost.setDescription(postDTO.getDescription());
+		existingPost.setPublished(postDTO.isPublished());
+
+		Post updatedPost = postRepository.save(existingPost);
+		return modelMapper.map(updatedPost, PostResDTO.class);
+	}
+
+	@Override
+	public String deletePost(Long id) {
+		Post existingPost = postRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+
+		postRepository.deleteById(id);
+		return Constants.POST_DELETED_SUCCESSFULLY;
+	}
 }

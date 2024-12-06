@@ -1,6 +1,7 @@
 package com.springboot.onetomany_bi.service.impl;
 
-import com.springboot.onetomany_bi.dto.CommentDTO;
+import com.springboot.onetomany_bi.dto.Request.CommentReqDTO;
+import com.springboot.onetomany_bi.dto.Response.CommentResDTO;
 import com.springboot.onetomany_bi.entity.Comment;
 import com.springboot.onetomany_bi.entity.Post;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
@@ -18,34 +19,35 @@ import java.util.stream.Collectors;
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper modelMapper) {
-        this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
-        this.modelMapper = modelMapper;
-    }
+    private PostRepository postRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public List<CommentDTO> findByPostId(Long postId) {
+    public List<CommentResDTO> findByPostId(Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         return comments.stream()
-                .map(comment -> modelMapper.map(comment, CommentDTO.class))
+                .map(comment -> modelMapper.map(comment, CommentResDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CommentDTO findById(Long id) throws ResourceNotFoundException {
+    public CommentResDTO findById(Long id) throws ResourceNotFoundException {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + id));
-        return modelMapper.map(comment, CommentDTO.class);
+        return modelMapper.map(comment, CommentResDTO.class);
     }
 
     @Override
-    public CommentDTO createComment(Long postId, CommentDTO commentRequest) throws ResourceNotFoundException {
+    public CommentResDTO createComment(Long postId, CommentReqDTO commentRequest) throws ResourceNotFoundException {
+        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
+            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
+        }
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
 
@@ -57,17 +59,21 @@ public class CommentServiceImpl implements CommentService {
         comment.setPost(post);
         Comment savedComment = commentRepository.save(comment);
 
-        return modelMapper.map(savedComment, CommentDTO.class);
+        return modelMapper.map(savedComment, CommentResDTO.class);
     }
 
     @Override
-    public CommentDTO updateComment(Long id, CommentDTO commentRequest) throws ResourceNotFoundException {
+    public CommentResDTO updateComment(Long id, CommentReqDTO commentRequest) throws ResourceNotFoundException {
         Comment existingComment = commentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + id));
 
+        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
+            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
+        }
+
         existingComment.setContent(commentRequest.getContent());
         Comment updatedComment = commentRepository.save(existingComment);
-        return modelMapper.map(updatedComment, CommentDTO.class);
+        return modelMapper.map(updatedComment, CommentResDTO.class);
     }
 
     @Override
@@ -84,7 +90,7 @@ public class CommentServiceImpl implements CommentService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
 
-        Comment comment = commentRepository.findByIdAndPostId(commentId, postId)
+        Comment comment = (Comment) commentRepository.findByIdAndPostId(commentId, postId)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + commentId + Constants.POST_NOT_FOUND + postId));
 
         commentRepository.delete(comment);
