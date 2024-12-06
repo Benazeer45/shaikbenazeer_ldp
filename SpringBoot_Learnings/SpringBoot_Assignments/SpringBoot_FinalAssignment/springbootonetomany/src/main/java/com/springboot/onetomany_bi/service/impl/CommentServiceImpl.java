@@ -1,83 +1,102 @@
 package com.springboot.onetomany_bi.service.impl;
 
+import com.springboot.onetomany_bi.dto.CommentDTO;
+import com.springboot.onetomany_bi.entity.Comment;
+import com.springboot.onetomany_bi.entity.Post;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
-import com.springboot.onetomany_bi.model.Comment;
-import com.springboot.onetomany_bi.model.Post;
 import com.springboot.onetomany_bi.repository.CommentRepository;
 import com.springboot.onetomany_bi.repository.PostRepository;
 import com.springboot.onetomany_bi.service.CommentService;
+import com.springboot.onetomany_bi.constants.Constants;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentRepository commentRepository;
-    private final PostRepository postRepository;
-
-    private static final String COMMENT_NOT_FOUND = "Comment not found with id = %d";
-    private static final String POST_NOT_FOUND = "Post not found with id = %d";
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Autowired
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository) {
-        this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
-    }
+    private PostRepository postRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
-    public List<Comment> findByPostId(Long postId) {
-        if (!postRepository.existsById(postId)) {
-            throw new ResourceNotFoundException(String.format(POST_NOT_FOUND, postId));
+    public List<CommentDTO> findByPostId(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        if (comments.isEmpty()) {
+            throw new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND  + postId);
         }
-        return commentRepository.findByPostId(postId);
+        return comments.stream()
+                .map(comment -> modelMapper.map(comment, CommentDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Comment findById(Long id) {
-        return commentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(COMMENT_NOT_FOUND, id)));
+    public CommentDTO findById(Long id) throws ResourceNotFoundException {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + id));
+        return modelMapper.map(comment, CommentDTO.class);
     }
 
     @Override
-    public Comment createCommentIndependent(Comment commentRequest) {
-        return commentRepository.save(commentRequest);
-    }
-
-    @Override
-    public Comment createComment(Long postId, Comment commentRequest) {
+    public CommentDTO createComment(Long postId, CommentDTO commentRequest) throws ResourceNotFoundException {
+        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
+            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
+        }
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(POST_NOT_FOUND, postId)));
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
 
-        commentRequest.setPost(post);
-        return commentRepository.save(commentRequest);
+        if (!post.isPublished()) {
+            throw new ResourceNotFoundException(Constants.POST_NOT_PUBLISHED + postId);
+        }
+
+        Comment comment = modelMapper.map(commentRequest, Comment.class);
+        comment.setPost(post);
+        Comment savedComment = commentRepository.save(comment);
+
+        return modelMapper.map(savedComment, CommentDTO.class);
     }
 
     @Override
-    public Comment updateComment(Long id, Comment commentRequest) {
+    public CommentDTO updateComment(Long id, CommentDTO commentRequest) throws ResourceNotFoundException {
         Comment existingComment = commentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(String.format(COMMENT_NOT_FOUND, id)));
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + id));
+
+        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
+            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
+        }
 
         existingComment.setContent(commentRequest.getContent());
-        return commentRepository.save(existingComment);
+        Comment updatedComment = commentRepository.save(existingComment);
+        return modelMapper.map(updatedComment, CommentDTO.class);
     }
 
     @Override
-    public boolean deleteComment(Long id) {
-        if (!commentRepository.existsById(id)) {
-            throw new ResourceNotFoundException(String.format(COMMENT_NOT_FOUND, id));
-        }
+    public String deleteComment(Long id) {
+        Comment existingComment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + id));
+
         commentRepository.deleteById(id);
-        return true;
+        return Constants.COMMENT_DELETED_SUCCESSFULLY;
     }
 
     @Override
-    public boolean deleteAllCommentsByPostId(Long postId) {
-        if (!postRepository.existsById(postId)) {
-            throw new ResourceNotFoundException(String.format(POST_NOT_FOUND, postId));
-        }
-        commentRepository.deleteByPostId(postId);
-        return true;
+    public String deleteCommentbyId(Long postId, Long commentId) throws ResourceNotFoundException {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND+ postId));
+
+        Comment comment = (Comment) commentRepository.findByIdAndPostId(commentId, postId)
+                .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND+ commentId + Constants.POST_NOT_FOUND+ postId));
+
+        commentRepository.delete(comment);
+        return Constants.COMMENT_DELETED_SUCCESSFULLY;
     }
+
 }

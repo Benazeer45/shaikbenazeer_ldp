@@ -1,91 +1,114 @@
 package com.springboot.onetomany_bi.controller;
 
+import com.springboot.onetomany_bi.constants.Constants;
+import com.springboot.onetomany_bi.dto.CommentDTO;
+import com.springboot.onetomany_bi.dto.PostDTO;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
-import com.springboot.onetomany_bi.model.Comment;
-import com.springboot.onetomany_bi.model.Post;
-import com.springboot.onetomany_bi.service.CommentService;
 import com.springboot.onetomany_bi.service.PostService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.springboot.onetomany_bi.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(PostRestController.API_VERSION)  // Use constant for API version in root path
+@RequestMapping(Constants.API_VERSION_1)
 public class PostRestController {
 
     private final PostService postService;
     private final CommentService commentService;
 
-    @Autowired
     public PostRestController(PostService postService, CommentService commentService) {
         this.postService = postService;
         this.commentService = commentService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<String> root() {
-        return new ResponseEntity<>("Welcome to the Post API", HttpStatus.OK);
-    }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) String title) {
-        List<Post> posts = postService.findAll(title);
+    public ResponseEntity<Page<PostDTO>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<PostDTO> posts = postService.findAllPaginated(page, size);
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
-    @GetMapping("/posts/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable("id") long id) {
-        Post post = postService.findById(id);
+
+    @GetMapping("/posts/{postId}")
+    public ResponseEntity<Object> getPostById(@PathVariable("postId") Long postId) {
+        PostDTO post = postService.findById(postId);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Object> createPost(@Valid @RequestBody Post post, BindingResult bindingResult) {
+    public ResponseEntity<Object> createPost(@Valid @RequestBody PostDTO postRequest,
+                                             BindingResult bindingResult) {
         return bindingResult.hasErrors()
-            ? new ResponseEntity<>("Validation failed", HttpStatus.BAD_REQUEST)
-            : new ResponseEntity<>("Post created successfully with ID: " + postService.createPost(post).getId(), HttpStatus.CREATED);
+                ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
+                .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(postService.createPost(postRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping("/posts/{id}")
-    public ResponseEntity<Object> updatePost(@PathVariable("id") long id, @Valid @RequestBody Post postRequest, BindingResult bindingResult) {
+    @PutMapping("/posts/{postId}")
+    public ResponseEntity<Object> updatePost(@PathVariable("postId") Long postId,
+                                             @Valid @RequestBody PostDTO postRequest,
+                                             BindingResult bindingResult) {
         return bindingResult.hasErrors()
-            ? new ResponseEntity<>("Validation failed", HttpStatus.BAD_REQUEST)
-            : new ResponseEntity<>("Post updated successfully with ID: " + postService.updatePost(id, postRequest).getId(), HttpStatus.OK);
+                ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
+                .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(postService.updatePost(postId, postRequest), HttpStatus.OK);
     }
 
-    @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Object> deletePost(@PathVariable("id") long id) {
-        postService.deletePost(id);
-        return new ResponseEntity<>("Post deleted successfully", HttpStatus.NO_CONTENT);
-    }
-
-    @DeleteMapping("/posts")
-    public ResponseEntity<Object> deleteAllPosts() {
-        postService.deleteAllPosts();
-        return new ResponseEntity<>("All posts deleted successfully", HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("/posts/published")
-    public ResponseEntity<List<Post>> findByPublished() {
-        List<Post> posts = postService.findByPublished(true);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+    @DeleteMapping("/posts/{postId}")
+    public ResponseEntity<Object> deletePost(@PathVariable("postId") Long postId) {
+        String message = postService.deletePost(postId);
+        return new ResponseEntity<>(message, HttpStatus.NO_CONTENT);
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<Object> createComment(@PathVariable("postId") Long postId, @Valid @RequestBody Comment commentRequest, BindingResult bindingResult) {
+    public ResponseEntity<Object> createComment(@PathVariable(value = "postId") Long postId,
+                                                @Valid @RequestBody CommentDTO commentRequest,
+                                                BindingResult bindingResult) {
         return bindingResult.hasErrors()
-            ? new ResponseEntity<>("Validation failed", HttpStatus.BAD_REQUEST)
-            : new ResponseEntity<>("Comment created successfully for post ID: " + postId, HttpStatus.CREATED);
+                ? new ResponseEntity<>(bindingResult.getAllErrors().stream()
+                .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", ")), HttpStatus.BAD_REQUEST)
+                : new ResponseEntity<>(commentService.createComment(postId, commentRequest), HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/posts/{postId}/comments/{commentId}")
-    public ResponseEntity<Object> deleteComment(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId) {
-        commentService.deleteComment(postId, commentId);
-        return new ResponseEntity<>("Comment deleted successfully from post ID: " + postId, HttpStatus.NO_CONTENT);
+    @GetMapping("/posts/{postId}/comments")
+    public ResponseEntity<Object> getAllCommentsByPostId(@PathVariable(value = "postId") Long postId) {
+        List<CommentDTO> comments = commentService.findByPostId(postId);
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
+
+
+    @DeleteMapping("/posts/{postId}/comments/{commentId}")
+    public ResponseEntity<String> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        try {
+            String response = commentService.deleteCommentbyId(postId, commentId);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (ResourceNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<List<PostDTO>> filterPosts(
+            @RequestParam(required = false) Boolean published,
+            @RequestParam(required = false) String title
+    ) {
+        List<PostDTO> posts = postService.findFilteredPosts(published, title);
+        return new ResponseEntity<>(posts, HttpStatus.OK);
+    }
+
 }

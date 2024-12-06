@@ -1,17 +1,15 @@
-package com.springboot.onetomany_bi.model;
+package com.springboot.onetomany_bi.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @Entity
 public class Post {
 
@@ -19,13 +17,9 @@ public class Post {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_generator")
 	private Long id;
 
-	@NotBlank(message = "Title cannot be blank")
-	@Size(max = 100, message = "Title should not exceed 100 characters")
 	@Column(name = "title")
 	private String title;
 
-	@NotBlank(message = "Description cannot be blank")
-	@Size(max = 500, message = "Description should not exceed 500 characters")
 	@Column(name = "description")
 	private String description;
 

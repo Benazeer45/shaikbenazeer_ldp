@@ -1,24 +1,26 @@
 package com.springboot.onetomany_bi.service;
 
+import com.springboot.onetomany_bi.dto.PostDTO;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
-import com.springboot.onetomany_bi.model.Post;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PostService {
 
-	List<Post> findAll(String title);
+	List<PostDTO> findAll() throws ResourceNotFoundException;
 
-	Optional<Post> findById(long id) throws ResourceNotFoundException;
+	PostDTO findById(Long id);
 
-	Post createPost(Post post);
+	String createPost(PostDTO postDTO);
 
-	Post updatePost(long id, Post postRequest) throws ResourceNotFoundException;
+	PostDTO updatePost(Long id, PostDTO postDTO) throws ResourceNotFoundException;
 
-	void deletePost(long id);
+	String deletePost(Long id) throws ResourceNotFoundException;
 
-	void deleteAllPosts();
+	List<PostDTO> findByPublished(boolean published);
 
-	List<Post> findByPublished(boolean published);
+	Page<PostDTO> findAllPaginated(int page, int size);
+
+	List<PostDTO> findFilteredPosts(Boolean published, String title);
 }

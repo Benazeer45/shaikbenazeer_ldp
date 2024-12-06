@@ -1,117 +1,109 @@
 package com.springboot.onetomany_bi.service.impl;
 
+import com.springboot.onetomany_bi.dto.PostDTO;
+import com.springboot.onetomany_bi.entity.Post;
 import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
-import com.springboot.onetomany_bi.model.Comment;
-import com.springboot.onetomany_bi.model.Post;
 import com.springboot.onetomany_bi.repository.PostRepository;
 import com.springboot.onetomany_bi.service.PostService;
+import com.springboot.onetomany_bi.constants.Constants;
+import com.springboot.onetomany_bi.specifications.PostSpecifications;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
 
-    private static final String POST_NOT_FOUND_MESSAGE = "Post not found with id = ";
+	@Autowired
+	private PostRepository postRepository;
 
-    private final PostRepository postRepository;
+	@Autowired
+	private ModelMapper modelMapper;
 
-    @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
+	@Override
+	public List<PostDTO> findAll() {
+		List<Post> posts = postRepository.findAll();
+		return posts.stream()
+				.map(post -> modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
+	}
 
-    @Override
-    public List<Post> findAll(String title) {
-        return (title == null) ? postRepository.findAll() : postRepository.findByTitleContaining(title);
-    }
 
-    @Override
-    public Post findById(long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_MESSAGE + id));
-    }
+	@Override
+	public PostDTO findById(Long id) {
+		Post post = postRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
+		return modelMapper.map(post, PostDTO.class);
+	}
 
-    @Override
-    public Post createPost(Post post) {
-        return postRepository.save(post);
-    }
+	@Override
+	public String createPost(PostDTO postDTO) {
+		if (postDTO.getTitle() == null || postDTO.getTitle().isEmpty()) {
+			return Constants.TITLE_REQUIRED;
+		}
+		if (postDTO.getDescription() == null || postDTO.getDescription().isEmpty()) {
+			return Constants.DESCRIPTION_REQUIRED;
+		}
 
-    @Override
-    public Post updatePost(long id, Post updatedPost) {
-        Post existingPost = postRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(POST_NOT_FOUND_MESSAGE + id));
+		Post post = modelMapper.map(postDTO, Post.class);
+		postRepository.save(post);
+		return Constants.POST_CREATED_SUCCESSFULLY;
+	}
 
-        existingPost.setTitle(updatedPost.getTitle());
-        existingPost.setDescription(updatedPost.getDescription());
-        existingPost.setPublished(updatedPost.isPublished());
+	@Override
+	public PostDTO updatePost(Long id, PostDTO postDTO) {
+		Post existingPost = postRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
 
-        return postRepository.save(existingPost);
-    }
+		existingPost.setTitle(postDTO.getTitle());
+		existingPost.setDescription(postDTO.getDescription());
+		existingPost.setPublished(postDTO.isPublished());
 
-    @Override
-    public void deletePost(long id) {
-        if (!postRepository.existsById(id)) {
-            throw new ResourceNotFoundException(POST_NOT_FOUND_MESSAGE + id);
-        }
-        postRepository.deleteById(id);
-    }
+		Post updatedPost = postRepository.save(existingPost);
+		return modelMapper.map(updatedPost, PostDTO.class);
+	}
 
-    @Override
-    public void deleteAllPosts() {
-        postRepository.deleteAll();
-    }
+	@Override
+	public String deletePost(Long id) {
+		Post existingPost = postRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
 
-    @Override
-    public List<Post> findByPublished(boolean published) {
-        return postRepository.findByPublished(published);
-    }
-}
+		postRepository.deleteById(id);
+		return Constants.POST_DELETED_SUCCESSFULLY;
+	}
 
-package com.springboot.onetomany_bi.service.impl;
+	@Override
+	public List<PostDTO> findByPublished(boolean published) {
+		List<Post> posts = postRepository.findByPublished(published);
+		return posts.stream()
+				.map(post -> modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
+	}
 
-import com.springboot.onetomany_bi.exception.ResourceNotFoundException;
-import com.springboot.onetomany_bi.model.Comment;
-import com.springboot.onetomany_bi.model.Post;
-import com.springboot.onetomany_bi.repository.CommentRepository;
-import com.springboot.onetomany_bi.repository.PostRepository;
-import com.springboot.onetomany_bi.service.CommentService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+	@Override
+	public Page<PostDTO> findAllPaginated(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Post> posts = postRepository.findAll(pageable);
+		return posts.map(post -> modelMapper.map(post, PostDTO.class));
+	}
 
-@Service
-public class CommentServiceImpl implements CommentService {
+	@Override
+	public List<PostDTO> findFilteredPosts(Boolean published, String title) {
+		Specification<Post> spec = Specification.where(PostSpecifications.isPublished(published))
+				.and(PostSpecifications.hasTitleContaining(title));
+		List<Post> posts = postRepository.findAll(spec);
+		return posts.stream()
+				.map(post -> modelMapper.map(post, PostDTO.class))
+				.collect(Collectors.toList());
+	}
 
-    private static final String COMMENT_NOT_FOUND_MESSAGE = "Comment not found with id = ";
 
-    private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-
-    @Autowired
-    public CommentServiceImpl(PostRepository postRepository, CommentRepository commentRepository) {
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-    }
-
-    @Override
-    public void createComment(Long postId, String content) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found with id " + postId));
-
-        Comment comment = new Comment();
-        comment.setContent(content);
-        comment.setPost(post);
-
-        commentRepository.save(comment);
-    }
-
-    @Override
-    public void deleteComment(Long commentId) {
-        if (!commentRepository.existsById(commentId)) {
-            throw new ResourceNotFoundException(COMMENT_NOT_FOUND_MESSAGE + commentId);
-        }
-        commentRepository.deleteById(commentId);
-    }
 }
