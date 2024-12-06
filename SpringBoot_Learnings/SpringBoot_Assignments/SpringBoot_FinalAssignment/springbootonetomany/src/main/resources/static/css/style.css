@@ -1,0 +1,66 @@
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .navbar-brand {
+        font-weight: bold;
+    }
+    .comment-section {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    .comment {
+        margin-bottom: 15px;
+    }
+    .comment-actions {
+        float: right;
+    }
+    .header {
+        background-color: #800080;
+        color: white;
+        padding: 10px 0;
+        text-align: center;
+    }
+    .footer {
+        background-color: #f8f9fa;
+        color: #6c757d;
+        padding: 20px 0;
+        text-align: center;
+    }
+    .form-container {
+        background-color: #f4f4f9;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .btn-primary {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .btn-primary:hover {
+        background-color: #218838;
+        border-color: #1e7e34;
+    }
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+    .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+    }
+    body {
+        background-color: #f0f8ff;
+    }
+    th {
+        background-color: #87ceeb;
+    }
+    footer {
+        background-color: #343a40;
+    }
+</style>
