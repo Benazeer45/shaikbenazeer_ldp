@@ -14,16 +14,10 @@ import lombok.AllArgsConstructor;
 public class CommentReqDTO {
 
 
-    @Size(min = 5, max = 50, message = Constants.COMMENT_CONTENT_NULL_OR_EMPTY)
+    @Size(min = 4, max = 50, message = Constants.COMMENT_CONTENT_NULL_OR_EMPTY)
     private String content;
 
     @NotNull(message = Constants.POST_NOT_FOUND)
     private Long postId;
-
-    @Size(min = 5, max = 20, message = Constants.TITLE_REQUIRED)
-    private String title;
-
-    @Size(min = 10, max = 200, message = Constants.DESCRIPTION_REQUIRED)
-    private String description;
 
 }

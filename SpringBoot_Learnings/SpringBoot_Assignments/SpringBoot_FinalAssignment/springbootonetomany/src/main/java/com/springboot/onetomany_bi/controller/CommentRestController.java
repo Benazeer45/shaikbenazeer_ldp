@@ -35,14 +35,7 @@ public class CommentRestController {
 
   @PostMapping("/posts/{postId}/comments")
   public ResponseEntity<Object> createComment(@PathVariable(value = "postId") Long postId,
-                                              @Valid @RequestBody CommentReqDTO commentRequest,
-                                              BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      String errors = bindingResult.getAllErrors().stream()
-              .map(error -> ((FieldError) error).getField() + ": " + error.getDefaultMessage())
-              .collect(Collectors.joining(", "));
-      return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
+                                              @Valid @RequestBody CommentReqDTO commentRequest) {
     CommentResDTO createdComment = commentService.createComment(postId, commentRequest);
     return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
   }
@@ -67,9 +60,17 @@ public class CommentRestController {
     return new ResponseEntity<>(updatedComment, HttpStatus.OK);
   }
 
-  @DeleteMapping("/comments/{id}")
-  public ResponseEntity<Object> deleteComment(@PathVariable("id") long id) {
-    String responseMessage = commentService.deleteComment(id);
-    return new ResponseEntity<>(responseMessage, HttpStatus.NO_CONTENT);
+//  @DeleteMapping("/comments/{id}")
+//  public ResponseEntity<Object> deleteComment(@PathVariable("id") long id) {
+//    String responseMessage = commentService.deleteCommentbyId(postId, id);
+//    return new ResponseEntity<>(responseMessage, HttpStatus.OK);  // Use HttpStatus.OK to return the success message in the response body
+//  }
+
+
+  @DeleteMapping("/posts/{postId}/comments/{id}")
+  public ResponseEntity<Object> deleteComment(@PathVariable("postId") long postId, @PathVariable("id") long id) {
+    String responseMessage = commentService.deleteCommentbyId(postId, id);
+    return new ResponseEntity<>(responseMessage, HttpStatus.OK);
   }
+
 }
