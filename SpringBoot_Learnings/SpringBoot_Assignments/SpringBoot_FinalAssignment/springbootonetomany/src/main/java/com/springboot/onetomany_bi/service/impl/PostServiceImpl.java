@@ -45,15 +45,6 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResDTO createPost(PostReqDTO postDTO) {
-		Post post = modelMapper.map(postDTO, Post.class);
-
-		Post savedPost = postRepository.save(post);
-		return modelMapper.map(savedPost, PostResDTO.class);
-	}
-
-
-	@Override
 	public PostResDTO updatePost(Long id, PostReqDTO postDTO) {
 		Post existingPost = postRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + id));
@@ -73,5 +64,12 @@ public class PostServiceImpl implements PostService {
 
 		postRepository.deleteById(id);
 		return Constants.POST_DELETED_SUCCESSFULLY;
+	}
+
+	@Override
+	public PostResDTO createPost(PostReqDTO postDTO) {
+		Post post = modelMapper.map(postDTO, Post.class);
+		Post savedPost = postRepository.save(post);
+		return modelMapper.map(savedPost, PostResDTO.class);
 	}
 }

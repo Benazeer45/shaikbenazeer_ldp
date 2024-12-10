@@ -44,23 +44,19 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentResDTO createComment(Long postId, CommentReqDTO commentRequest) throws ResourceNotFoundException {
-        if (commentRequest.getContent() == null || commentRequest.getContent().isEmpty()) {
-            throw new ResourceNotFoundException.ContentMissingException(Constants.COMMENT_CONTENT_NULL_OR_EMPTY);
-        }
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
-
-        if (!post.isPublished()) {
-            throw new ResourceNotFoundException(Constants.POST_NOT_PUBLISHED + postId);
-        }
+    public CommentResDTO createComment(Long postId, CommentReqDTO commentRequest) {
+        Post post = postRepository.findById(postId).orElse(null);
 
         Comment comment = modelMapper.map(commentRequest, Comment.class);
-        comment.setPost(post);
-        Comment savedComment = commentRepository.save(comment);
+        if (post != null) {
+            comment.setPost(post);
+        }
 
+        Comment savedComment = commentRepository.save(comment);
         return modelMapper.map(savedComment, CommentResDTO.class);
     }
+
+
 
     @Override
     public CommentResDTO updateComment(Long id, CommentReqDTO commentRequest) throws ResourceNotFoundException {
@@ -89,11 +85,13 @@ public class CommentServiceImpl implements CommentService {
     public String deleteCommentbyId(Long postId, Long commentId) throws ResourceNotFoundException {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.POST_NOT_FOUND + postId));
-
         Comment comment = (Comment) commentRepository.findByIdAndPostId(commentId, postId)
                 .orElseThrow(() -> new ResourceNotFoundException(Constants.COMMENT_NOT_FOUND + commentId + Constants.POST_NOT_FOUND + postId));
 
         commentRepository.delete(comment);
         return Constants.COMMENT_DELETED_SUCCESSFULLY;
     }
+
+
+
 }
